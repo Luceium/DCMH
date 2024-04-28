@@ -3,7 +3,7 @@ import React from "react";
 const UnsubscribePage = () => {
   return (
     <h1>
-      We're sorry to see you go.
+      We are sorry to see you go.
       <br />
       <br />
       You have been unsubscribed from our mailing list.
