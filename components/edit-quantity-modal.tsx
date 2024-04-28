@@ -11,6 +11,11 @@ const EditQuantityModal = ({ item }: { item: Item }) => {
     item.targetQuantity
   );
 
+  useEffect(() => {
+    setNewQuantity(item.quantity);
+    setNewTargetQuantity(item.targetQuantity);
+  }, [item]);
+
   return (
     <>
       <DialogHeader>Edit {item.name} Quantity</DialogHeader>
