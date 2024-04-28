@@ -13,7 +13,8 @@ function generateTab(
   name: string,
   items: Item[],
   edit: boolean,
-  updateItem: (item: Item) => void
+  updateItem: (item: Item) => void,
+  deleteItem: (item: Item) => void
 ) {
   return {
     title: name,
@@ -23,7 +24,12 @@ function generateTab(
         <p>{name} Products</p>
         <div className="flex justify-center flex-wrap gap-5">
           {items.map((item) => (
-            <ItemCard key={item.id} item={item} updateItem={updateItem} />
+            <ItemCard
+              key={item.id}
+              item={item}
+              updateItem={updateItem}
+              deleteItem={deleteItem}
+            />
           ))}
           {edit && <ItemCardForm />}
         </div>
@@ -40,15 +46,33 @@ export default function MainPageTabs({
   const { edit } = useContext(EditContext);
   const [items, setItems] = useState(_items);
   const tabs = Object.entries(items).map(([category, i]) => {
-    return generateTab(category, i, edit, (item: Item) => {
-      setItems(
-        produce(items, (draft) => {
-          draft[category][
-            draft[category].findIndex((draftItem) => draftItem.id === item.id)
-          ] = item;
-        })
-      );
-    });
+    return generateTab(
+      category,
+      i,
+      edit,
+      (item: Item) => {
+        setItems(
+          produce(items, (draft) => {
+            draft[category][
+              draft[category].findIndex((draftItem) => draftItem.id === item.id)
+            ] = item;
+          })
+        );
+      },
+      (item: Item) => {
+        console.log(item);
+        setItems(
+          produce(items, (draft) => {
+            draft[category].splice(
+              draft[category].findIndex(
+                (draftItem) => draftItem.id === item.id
+              ),
+              1
+            );
+          })
+        );
+      }
+    );
   });
 
   useEffect(() => {

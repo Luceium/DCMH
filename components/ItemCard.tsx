@@ -17,9 +17,11 @@ import { deleteItem } from "@/actions/editItems";
 const ItemCard = ({
   item,
   updateItem,
+  deleteItem: deleteItemFromUI,
 }: {
   item: Item;
   updateItem: (item: Item) => void;
+  deleteItem: (item: Item) => void;
 }) => {
   const { edit } = useContext(EditContext);
 
@@ -43,8 +45,9 @@ const ItemCard = ({
       >
         {edit && (
           <button
-            onClick={() => {
-              deleteItem(item.id);
+            onClick={async () => {
+              await deleteItem(item.id);
+              deleteItemFromUI(item);
             }}
             className="absolute top-0 right-0 p-2 text-black"
           >
