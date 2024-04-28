@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import Card from "./card";
 import { Item } from "@prisma/client";
-import { Edit } from "lucide-react";
 import EditQuantityModal from "./edit-quantity-modal";
+import { fetchItem } from "@/actions/fetchItems";
 
 const ItemCard = ({
   item,
@@ -19,7 +19,14 @@ const ItemCard = ({
   updateItem: (item: Item) => void;
 }) => {
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={async (open) => {
+        if (open) {
+          const newItem = await fetchItem(item.id);
+          if (newItem) updateItem(newItem);
+        }
+      }}
+    >
       <Card
         id={item.id}
         name={item.name}
