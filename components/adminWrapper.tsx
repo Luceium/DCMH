@@ -1,16 +1,16 @@
 "use client";
 import isAdmin from '@/lib/is-admin';
+import useIsAdmin from '@/lib/useIsAdmin';
 import React, { ReactNode, useState } from 'react'
 
 const AdminWrapper = ({children} : {children: ReactNode}) => {
 
 
-  const [admin, setAdmin] = useState(false);
-  isAdmin().then((value) => setAdmin(value));
+  const {loading, isAdmin} = useIsAdmin();
   return (
     
     <>
-      {admin ?? children}
+      {isAdmin ?? children}
     </>
   )
 }
