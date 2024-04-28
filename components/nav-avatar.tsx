@@ -23,9 +23,11 @@ import {
 import { Skeleton } from "./ui/skeleton";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import useIsAdmin from "@/lib/useIsAdmin";
 
 export default function NavAvatar() {
   const { loading, user } = useUser();
+  const { isAdmin } = useIsAdmin();
   const { getLoginPageUrl, getAccountPageUrl } = useHostedPageUrls();
   const logout = useLogoutFunction();
 
@@ -82,6 +84,14 @@ export default function NavAvatar() {
           </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        {isAdmin && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link href="/admin/manage-users">Manage Users</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem className="cursor-pointer" onClick={() => logout()}>
           Logout
         </DropdownMenuItem>
