@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import Card from "./card";
 import { Item } from "@prisma/client";
+import { Edit } from "lucide-react";
+import EditQuantityModal from "./edit-quantity-modal";
 
 const ItemCard = ({ item }: { item: Item }) => {
   return (
@@ -31,27 +33,7 @@ const ItemCard = ({ item }: { item: Item }) => {
         </AdminWrapper>
       </Card>
       <DialogContent>
-        <DialogHeader>Edit {item.name} Quantity</DialogHeader>
-        <div className="flex flex-col gap-4">
-          <label>
-            <span>Current Quantity:</span>
-            <input
-              type="number"
-              name="quantity"
-              defaultValue={item.quantity}
-              className="input"
-            />
-          </label>
-          <label>
-            <span>Target Quantity:</span>
-            <input
-              type="number"
-              name="targetQuantity"
-              defaultValue={item.targetQuantity}
-              className="input"
-            />
-          </label>
-        </div>
+        <EditQuantityModal item={item} />
       </DialogContent>
     </Dialog>
   );
