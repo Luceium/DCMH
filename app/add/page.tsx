@@ -1,6 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import prisma from "@/lib/prisma";
-import { Category } from "@prisma/client";
 import { redirect } from 'next/navigation';
 
 
@@ -17,7 +16,7 @@ export default async function Add(){
             data: {
                 name: formData.get("name") as string,
                 description: formData.get("description")as string,
-                category: formData.get("category") as Category,
+                category: formData.get("category") as string,
                 quantity: parseInt(formData.get("quantity") as string),
                 targetQuantity: parseInt(formData.get("targetQuantity") as string),
                 imageURL: formData.get("imageURL") as string
