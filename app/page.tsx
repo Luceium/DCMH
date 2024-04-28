@@ -1,8 +1,8 @@
 import Card from "@/components/card";
 import MainPageTabs from "@/components/MainPageTabs";
-import prisma from "@/lib/prisma"
+import prisma from "@/lib/prisma";
 import { Item, Category } from "@prisma/client";
-import EditQuantityModal from "@/components/editQuantityModal";
+import EditQuantityModal from "@/components/ItemCard";
 
 async function getItems() {
   const medicineItems = await prisma.item.findMany({
@@ -38,8 +38,8 @@ export default async function Home() {
   } = await getItems();
 
   return (
-    <MainPageTabs 
-      medicineItems={medicineItems} 
+    <MainPageTabs
+      medicineItems={medicineItems}
       food_suppliesItems={food_suppliesItems}
       cleaning_suppliesItems={cleaning_suppliesItems}
       hygieneItems={hygieneItems}
