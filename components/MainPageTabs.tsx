@@ -3,8 +3,9 @@
 import { Tabs } from "./ui/tabs";
 import { Item } from "@prisma/client";
 import ItemCard from "./ItemCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { produce } from "immer";
+import { fetchItems } from "@/actions/fetchItems";
 
 function generateTab(
   name: string,
@@ -44,6 +45,14 @@ export default function MainPageTabs({
       );
     });
   });
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setItems(await fetchItems());
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="h-[100vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
