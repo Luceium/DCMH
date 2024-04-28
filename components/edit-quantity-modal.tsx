@@ -35,7 +35,7 @@ const EditQuantityModal = ({
             }}
             type="number"
             name="quantity"
-            value={item.quantity}
+            value={newQuantity}
             className="input max-w-20"
           />
         </div>
@@ -48,7 +48,7 @@ const EditQuantityModal = ({
             }}
             type="number"
             name="targetQuantity"
-            value={item.targetQuantity}
+            value={newTargetQuantity}
             className="input max-w-20"
           />
         </div>
