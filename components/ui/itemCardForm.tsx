@@ -1,27 +1,59 @@
 import React from "react";
 import { Progress } from "./progress";
+import { addItem, addItemFromForm } from "@/actions/editItems";
 
-const ItemCardForm = () => {
+const ItemCardForm = ({ category }: { category: string }) => {
   return (
     <div className="card w-80 bg-gray-500 mb-4">
-      <div className="h-[275px] bg-gray-500 p-5 rounded-lg text-center">
-        <p className="">Add New Item</p>
-        <div className="divider my-1 before:bg-black after:bg-black"/>
-        <input
-          defaultValue="image url"
-          className="overflow-hidden w-full text-lg rounded-md p-1 text-primary"
-        />
-      </div>
-      <div className="card-body text-sm">
-        <input className="card-title rounded-md p-1 text-primary" defaultValue="Name: " />
-        <textarea className="rounded-md p-1 text-primary" defaultValue="Description: "></textarea>
-        <div className="hidden">
-          <Progress value={50} />
-          <p>
-            {50}/{100}
-          </p>
+      <form
+        className="p-5"
+        action={(formData) => addItemFromForm(formData, category)}
+      >
+        <p className="w-full text-center">Add New Item</p>
+        <div className="divider my-1 before:bg-black after:bg-black" />
+        <div className="h-[200px] bg-gray-500 w-full">
+          <input
+            name="imageURL"
+            placeholder="image url"
+            className="w-full overflow-hidden text-lg rounded-md p-1"
+          ></input>
         </div>
-      </div>
+        <div className="card-body text-sm p-0">
+          <input
+            name="name"
+            className="card-title p-1 rounded-md"
+            placeholder="Name: "
+          />
+          <textarea
+            name="description"
+            placeholder="Description: "
+            className="overflow-hidden text-lg input p-1 border rounded-md"
+          />
+          <div>
+            <Progress value={50} />
+            <p className="pt-2">
+              <input
+                name="quantity"
+                type="number"
+                defaultValue={50}
+                className="w-12 text-lg input p-1 border rounded-md text-center"
+              />
+              &nbsp; / &nbsp;
+              <input
+                name="targetQuantity"
+                type="number"
+                defaultValue={100}
+                className="w-12 text-lg input p-1 border rounded-md text-center"
+              />
+            </p>
+          </div>
+          <div className="card-actions justify-end ">
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };

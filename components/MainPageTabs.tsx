@@ -31,7 +31,7 @@ function generateTab(
               deleteItem={deleteItem}
             />
           ))}
-          {edit && <ItemCardForm />}
+          {edit && <ItemCardForm category={name} />}
         </div>
       </div>
     ),
