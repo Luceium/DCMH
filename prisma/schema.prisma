@@ -24,9 +24,9 @@ model User {
 model Item {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
+  category Category
   description String
   quantity Int 
-  potentialQuantity Int 
   targetQuantity Int
   arrival DateTime
   imageURL String
@@ -42,8 +42,15 @@ model Inventory {
   trend Trend @default(CONSTANT)
 }
 
-enum Trend{
+enum Trend {
   DECREASE
   INCREASE
   CONSTANT
+}
+
+enum Category {
+  FOOD_SUPPLIES
+  CLEANING_SANITIZING
+  HYGIENE
+  MEDICINE
 }
