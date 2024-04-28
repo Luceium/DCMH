@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "img.propelauth.com",
       },
+      {
+        protocol: "https",
+        hostname: "media.istockphoto.com",
+      }
     ],
   },
 };
