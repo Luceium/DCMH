@@ -5,44 +5,22 @@ import { Item, Category } from "@prisma/client";
 import EditQuantityModal from "@/components/ItemCard";
 
 async function getItems() {
-  const medicineItems = await prisma.item.findMany({
-    where: { category: Category.MEDICINE },
-  });
-
-  const food_suppliesItems = await prisma.item.findMany({
-    where: { category: Category.FOOD_SUPPLIES },
-  });
-
-  const cleaning_suppliesItems = await prisma.item.findMany({
-    where: { category: Category.CLEANING_SANITIZING },
-  });
-
-  const hygieneItems = await prisma.item.findMany({
-    where: { category: Category.HYGIENE },
-  });
-
-  return {
-    medicineItems,
-    food_suppliesItems,
-    cleaning_suppliesItems,
-    hygieneItems,
+  const itemsByCategory: Record<Category, Item[]> = {
+    [Category.MEDICINE]: [],
+    [Category.FOOD_SUPPLIES]: [],
+    [Category.CLEANING_SANITIZING]: [],
+    [Category.HYGIENE]: [],
   };
+
+  const items = await prisma.item.findMany({});
+  items.forEach((item) => {
+    itemsByCategory[item.category].push(item);
+  });
+  return itemsByCategory;
 }
 
 export default async function Home() {
-  const {
-    medicineItems,
-    food_suppliesItems,
-    cleaning_suppliesItems,
-    hygieneItems,
-  } = await getItems();
+  const items = await getItems();
 
-  return (
-    <MainPageTabs
-      medicineItems={medicineItems}
-      food_suppliesItems={food_suppliesItems}
-      cleaning_suppliesItems={cleaning_suppliesItems}
-      hygieneItems={hygieneItems}
-    />
-  );
+  return <MainPageTabs items={items} />;
 }
