@@ -12,7 +12,7 @@ import EditQuantityModal from "./edit-quantity-modal";
 import { fetchItem } from "@/actions/fetchItems";
 import { XSVG } from "./svg";
 import { EditContext } from "@/lib/context";
-import { deleteItem } from "@/actions/deleteItem";
+import { deleteItem } from "@/actions/editItems";
 
 const ItemCard = ({
   item,
