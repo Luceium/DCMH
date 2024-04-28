@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +25,10 @@ export const Tabs = ({
 }) => {
   const [active, setActive] = useState<Tab>(propTabs[0]);
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
+
+  useEffect(() => {
+    setTabs(propTabs);
+  }, [propTabs]);
 
   const moveSelectedTabToTop = (idx: number) => {
     const newTabs = [...propTabs];
