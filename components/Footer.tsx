@@ -17,7 +17,7 @@ const Footer = () => {
         <h6 className="footer-title">Mailing List</h6> 
         <fieldset className="form-control w-80">
           <label className="label">
-            <span className="label-text">Enter your email address tojoin our mailing list!</span>
+            <span className="label-text">Enter your email address to join our mailing list!</span>
           </label> 
           <div className="join">
             <input type="text" placeholder="username@site.com" className="input input-bordered join-item"/> 
