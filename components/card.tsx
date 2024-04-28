@@ -26,8 +26,10 @@ const Card = ({
         <p className="card-title">{name}</p>
         <p>{description}</p>
         <div>
-          <Progress value={quantity/targetQuantity * 100}/>
-          <p>{quantity}/{targetQuantity}</p>
+          <Progress value={(quantity / targetQuantity) * 100} />
+          <p>
+            {quantity}/{targetQuantity}
+          </p>
         </div>
         {children}
       </div>

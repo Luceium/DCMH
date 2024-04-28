@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import AdminWrapper from "@/components/adminWrapper";
 import {
   Dialog,
@@ -10,6 +10,9 @@ import Card from "./card";
 import { Item } from "@prisma/client";
 import EditQuantityModal from "./edit-quantity-modal";
 import { fetchItem } from "@/actions/fetchItems";
+import { XSVG } from "./svg";
+import { EditContext } from "@/lib/context";
+import { deleteItem } from "@/actions/deleteItem";
 
 const ItemCard = ({
   item,
@@ -18,6 +21,8 @@ const ItemCard = ({
   item: Item;
   updateItem: (item: Item) => void;
 }) => {
+  const { edit } = useContext(EditContext);
+
   return (
     <Dialog
       onOpenChange={async (open) => {
@@ -36,6 +41,16 @@ const ItemCard = ({
         imageURL={item.imageURL}
         category={item.category}
       >
+        {edit && (
+          <button
+            onClick={() => {
+              deleteItem(item.id);
+            }}
+            className="absolute top-0 right-0 p-2 text-black"
+          >
+            <XSVG />
+          </button>
+        )}
         <AdminWrapper>
           <div className="card-actions justify-end">
             <DialogTrigger className="btn btn-primary">Update</DialogTrigger>
