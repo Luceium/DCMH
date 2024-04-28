@@ -11,17 +11,17 @@ const Card = ({
   imageURL
 }: Item) => {
   return (
-    <div className="card w-96 glass">
+    <div className="card w-80 glass mb-4">
       <figure>
         <Image
           src={imageURL}
           alt={name}
-          width={384}
-          height={384}
+          width={275}
+          height={275}
         />
       </figure>
-      <div className="card-body">
-        <h2 className="card-title">{name}</h2>
+      <div className="card-body text-sm">
+        <p className="card-title">{name}</p>
         <p>{description}</p>
         <div className="card-actions justify-end">
           <button className="btn btn-primary">Donate!</button>
