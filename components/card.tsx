@@ -12,7 +12,7 @@ const Card = ({
   children,
 }: Item & { children: ReactNode }) => {
   return (
-    <div className="card w-80 glass mb-4">
+    <div className="card w-80 bg-gray-500 mb-4">
       <figure>
         <Image
           className="w-full h-52 object-cover"
