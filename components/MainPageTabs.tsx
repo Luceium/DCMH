@@ -14,6 +14,7 @@ function generateTab(
   items: Item[],
   edit: boolean,
   updateItem: (item: Item) => void,
+  addItem: (item: Item) => void,
   deleteItem: (item: Item) => void
 ) {
   return {
@@ -31,7 +32,7 @@ function generateTab(
               deleteItem={deleteItem}
             />
           ))}
-          {edit && <ItemCardForm category={name} />}
+          {edit && <ItemCardForm category={name} addItem={addItem} />}
         </div>
       </div>
     ),
@@ -56,6 +57,13 @@ export default function MainPageTabs({
             draft[category][
               draft[category].findIndex((draftItem) => draftItem.id === item.id)
             ] = item;
+          })
+        );
+      },
+      (item: Item) => {
+        setItems(
+          produce(items, (draft) => {
+            draft[category].push(item);
           })
         );
       },

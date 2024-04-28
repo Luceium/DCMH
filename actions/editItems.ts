@@ -24,5 +24,5 @@ export async function addItemFromForm(formData: FormData, category: string) {
     category: category,
   };
 
-  await addItem(newItem);
+  return await addItem(newItem);
 }

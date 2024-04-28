@@ -1,13 +1,22 @@
 import React from "react";
 import { Progress } from "./progress";
 import { addItem, addItemFromForm } from "@/actions/editItems";
+import { Item } from "@prisma/client";
 
-const ItemCardForm = ({ category }: { category: string }) => {
+const ItemCardForm = ({
+  category,
+  addItem,
+}: {
+  category: string;
+  addItem: (item: Item) => void;
+}) => {
   return (
     <div className="card w-80 bg-gray-500 mb-4">
       <form
         className="p-5"
-        action={(formData) => addItemFromForm(formData, category)}
+        action={async (formData) => {
+          addItem(await addItemFromForm(formData, category));
+        }}
       >
         <p className="w-full text-center">Add New Item</p>
         <div className="divider my-1 before:bg-black after:bg-black" />
