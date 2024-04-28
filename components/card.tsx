@@ -1,6 +1,6 @@
 import { Item } from "@prisma/client";
 import Image from "next/image";
-import React from "react";
+import React, { ReactNode } from "react";
 
 const Card = ({
   name,
@@ -8,8 +8,9 @@ const Card = ({
   quantity,
   targetQuantity,
   arrival,
-  imageURL
-}: Item) => {
+  imageURL,
+  children,
+}: (Item & {children: ReactNode})) => {
   return (
     <div className="card w-80 glass mb-4">
       <figure>
@@ -23,9 +24,7 @@ const Card = ({
       <div className="card-body text-sm">
         <p className="card-title">{name}</p>
         <p>{description}</p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Donate!</button>
-        </div>
+        {children}
       </div>
     </div>
   );

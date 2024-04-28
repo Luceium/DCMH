@@ -2,6 +2,7 @@ import Card from "@/components/card";
 import MainPageTabs from "@/components/MainPageTabs";
 import prisma from "@/lib/prisma"
 import { Item, Category } from "@prisma/client";
+import EditQuantityModal from "@/components/editQuantityModal";
 
 async function getItems() {
   const medicineItems = await prisma.item.findMany({
@@ -20,13 +21,12 @@ async function getItems() {
     where: { category: Category.HYGIENE },
   });
 
-
   return {
     medicineItems,
     food_suppliesItems,
     cleaning_suppliesItems,
-    hygieneItems
-  }
+    hygieneItems,
+  };
 }
 
 export default async function Home() {
@@ -34,7 +34,7 @@ export default async function Home() {
     medicineItems,
     food_suppliesItems,
     cleaning_suppliesItems,
-    hygieneItems
+    hygieneItems,
   } = await getItems();
 
   return (
