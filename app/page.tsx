@@ -2,8 +2,15 @@ import Card from "@/components/card";
 import Nav from "@/components/nav";
 import { Item, Trend } from "@/lib/types";
 import Image from "next/image";
+import prisma from "@/lib/prisma"
 
-export default function Home() {
+
+
+export default async function Home() {
+  const food = await prisma.item.findMany()
+
+
+
   const tmpURL = "https://media.istockphoto.com/id/501945961/photo/cough-drops.jpg?s=612x612&w=0&k=20&c=r5OvBT5Ghp2ilzcGY2ljboq0y33ThPspihBiBefiavg="
   const {
     medicalSupplies,
