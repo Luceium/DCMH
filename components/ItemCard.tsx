@@ -37,11 +37,9 @@ const ItemCard = ({
         category={item.category}
       >
         <AdminWrapper>
-          <DialogTrigger>
-            <div className="card-actions justify-end">
-              <button className="btn btn-primary">Update</button>
-            </div>
-          </DialogTrigger>
+          <div className="card-actions justify-end">
+            <DialogTrigger className="btn btn-primary">Update</DialogTrigger>
+          </div>
         </AdminWrapper>
       </Card>
       <DialogContent>
