@@ -30,7 +30,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Nav />
-            {children}
+            <div className="pt-4">
+              {children}
+            </div>
             <Footer />
             <Toaster />
           </ThemeProvider>
