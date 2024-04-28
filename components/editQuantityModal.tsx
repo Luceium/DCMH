@@ -25,7 +25,9 @@ const EditQuantityModal = ({item}: {item: Item}) => {
           </DialogTrigger>
         </AdminWrapper>
       </Card>
-      <DialogContent></DialogContent>
+      <DialogContent>
+        
+      </DialogContent>
     </Dialog>
   );
 };

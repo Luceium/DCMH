@@ -10,7 +10,7 @@ const AdminWrapper = ({children} : {children: ReactNode}) => {
   return (
     
     <>
-      {isAdmin ?? children}
+      {isAdmin && children}
     </>
   )
 }
