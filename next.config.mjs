@@ -8,24 +8,29 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
         hostname: "media.istockphoto.com",
       },
       {
         protocol: "https",
-        hostname: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt_I-fsOalFcGTCJYuAZQTo6tSFYbzMZmG-v-ViOymwA&s"
+        hostname:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt_I-fsOalFcGTCJYuAZQTo6tSFYbzMZmG-v-ViOymwA&s",
       },
       {
         protocol: "https",
-        hostname: "m.media-amazon.com"
+        hostname: "m.media-amazon.com",
       },
       {
         protocol: "https",
-        hostname: "encrypted-tbn0.gstatic.com"
+        hostname: "encrypted-tbn0.gstatic.com",
       },
       {
         protocol: "https",
-        hostname: "i5.walmartimages.com"
-      }
+        hostname: "i5.walmartimages.com",
+      },
     ],
   },
 };
