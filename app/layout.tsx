@@ -6,6 +6,7 @@ import { AuthProvider } from "@propelauth/nextjs/client";
 import Nav from "@/components/nav";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import { EditContext, EditContextProvider } from "@/lib/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,10 +30,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Nav />
-            <div className="pt-4">
-              {children}
-            </div>
+            <EditContextProvider>
+              <Nav />
+              <div className="pt-4">{children}</div>
+            </EditContextProvider>
             <Footer />
             <Toaster />
           </ThemeProvider>
