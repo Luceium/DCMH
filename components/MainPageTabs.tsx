@@ -60,7 +60,6 @@ export default function MainPageTabs({
         );
       },
       (item: Item) => {
-        console.log(item);
         setItems(
           produce(items, (draft) => {
             draft[category].splice(
