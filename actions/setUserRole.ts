@@ -1,3 +1,5 @@
+"use server";
+
 import { roleLevels } from "@/app/admin/manage-users/role-levels";
 import { getPropelAuthApis } from "@propelauth/nextjs/server";
 import { getUser } from "@propelauth/nextjs/server/app-router";
