@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { produce } from "immer";
 
 type Tab = {
   title: string;
@@ -27,7 +28,15 @@ export const Tabs = ({
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
 
   useEffect(() => {
-    setTabs(propTabs);
+    setTabs((tabs) => {
+      return produce(propTabs, (draft) => {
+        const activeIndex = propTabs.findIndex(
+          (tab) => tab.value === tabs[0].value
+        );
+        const newTabs = draft.splice(activeIndex, 1);
+        draft.unshift(propTabs[activeIndex]);
+      });
+    });
   }, [propTabs]);
 
   const moveSelectedTabToTop = (idx: number) => {
