@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@propelauth/nextjs/client";
 import Nav from "@/components/nav";
 import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,8 @@ export default function RootLayout({
           >
             <Nav />
             {children}
-            <Footer/>
+            <Footer />
+            <Toaster />
           </ThemeProvider>
         </body>
       </AuthProvider>
