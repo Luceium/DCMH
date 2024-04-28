@@ -1,6 +1,4 @@
 import Card from "@/components/card";
-import Nav from "@/components/nav";
-import { Trend } from "@/lib/types";
 import prisma from "@/lib/prisma"
 import { Item, Category } from "@prisma/client";
 
@@ -47,7 +45,6 @@ export default async function Home() {
 
   return (
     <>
-      <Nav />
         {sections.map((section) => (
           <div key={section.name} className="mx-4">
             <h1 className="text-2xl">{section.name}</h1>
