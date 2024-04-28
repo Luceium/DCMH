@@ -1,15 +1,14 @@
-import { Item } from "@/lib/types";
+import { Item } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 
 const Card = ({
   name,
-  target,
-  quantity,
-  unverifiedQuantity,
   description,
-  trend,
-  imageURL,
+  quantity,
+  targetQuantity,
+  arrival,
+  imageURL
 }: Item) => {
   return (
     <div className="card w-96 glass">
