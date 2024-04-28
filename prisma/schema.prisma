@@ -25,6 +25,15 @@ model Item {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   description String
-  price Float
-  photoURL String
+  quantity Int 
+  potentialQuantity Int 
+  targetQuantity Int
+  arrival DateTime
+  inventory Inventory[]
+}
+
+model Inventory {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  itemId String @db.ObjectId
+  item Item @relation(fields: [itemId], references: [id])
 }
