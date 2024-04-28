@@ -25,7 +25,10 @@ const Card = ({
       <div className="card-body text-sm">
         <p className="card-title">{name}</p>
         <p>{description}</p>
-        <Progress value={quantity/targetQuantity * 100}/>
+        <div>
+          <Progress value={quantity/targetQuantity * 100}/>
+          <p>{quantity}/{targetQuantity}</p>
+        </div>
         {children}
       </div>
     </div>
