@@ -1,6 +1,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import prisma from "@/lib/prisma";
 import { Category } from "@prisma/client";
+import { redirect } from 'next/navigation';
+
 
 
 
@@ -8,7 +10,7 @@ import { Category } from "@prisma/client";
 
 
 export default async function Add(){
-    async function submitEvent(formData: FormData){
+    async function submitItem(formData: FormData){
         "use server"
 
         await prisma.item.create({
@@ -17,15 +19,17 @@ export default async function Add(){
                 description: formData.get("description")as string,
                 category: formData.get("category") as Category,
                 quantity: parseInt(formData.get("quantity") as string),
+                targetQuantity: parseInt(formData.get("targetQuantity") as string),
+                imageURL: formData.get("imageURL") as string
             }
         })
+        redirect("/")
     }
-
     return(
         <div>
             <div>
                 <h1 className='text-4xl font-bold gap-4'>Add New Item</h1>
-                <form className='flex flex-col gap-4 text-primary'>
+                <form className='flex flex-col gap-4 text-primary' action={submitItem}>
                     <input className='input input-large p-4 border rounded-md' name="name" placeholder="Name of Item"/> 
                     <input className='input input-large p-4 border rounded-md' name="description" placeholder="Description"/> 
                     <Select name="category">
