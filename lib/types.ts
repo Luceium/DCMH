@@ -5,6 +5,7 @@ export interface Item {
     unverifiedQuantity: number;
     description: string;
     trend: Trend;
+    imageURL: string;
 }
 
 export enum Trend {

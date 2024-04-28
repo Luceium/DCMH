@@ -1,26 +1,31 @@
-import React from 'react'
+import { Item } from "@/lib/types";
+import React from "react";
 
-enum Trend {
-    DECREASE,
-    INCREASE,
-    CONSTANT
-}
-
-interface CardProps {
-    name: string;
-    target: number;
-    quantity: number;
-    unverifiedQuantity: number;
-    description: string;
-    trend: Trend;
-}
-
-const Card = ({name, target, quantity, unverifiedQuantity, description, trend} : CardProps) => {
+const Card = ({
+  name,
+  target,
+  quantity,
+  unverifiedQuantity,
+  description,
+  trend,
+}: Item) => {
   return (
-    <div>
-        
+    <div className="card w-96 glass">
+      <figure>
+        <img
+          src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+          alt={name}
+        />
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title">{name}</h2>
+        <p>{description}</p>
+        <div className="card-actions justify-end">
+          <button className="btn btn-primary">Donate!</button>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
