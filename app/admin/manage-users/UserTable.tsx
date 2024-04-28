@@ -18,9 +18,9 @@ import {
 import { UsersPagedResponse } from "@propelauth/nextjs/server";
 import { produce } from "immer";
 import { useState } from "react";
-import { setUserRole } from "./page";
 import { roleLevels } from "./role-levels";
 import { useToast } from "@/components/ui/use-toast";
+import { setUserRole } from "@/actions/setUserRole";
 
 export default function UserTable({
   userId,
