@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <AuthProvider authUrl={process.env.NEXT_PUBLIC_AUTH_URL!}>
         <body className={inter.className}>
           <ThemeProvider
