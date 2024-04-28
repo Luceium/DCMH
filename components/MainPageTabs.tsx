@@ -62,7 +62,7 @@ export default function TabsDemo({medicineItems, food_suppliesItems, cleaning_su
       value: "Hygiene",
       content: (
         <div className="w-full flex flex-col relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-gray-700 to-gray-900 gap-4 overflow-y-scroll">
-          <p>Playground tab</p>
+          <p>Hygiene</p>
           <div className="grid lg:grid-cols-3 grid-cols-2 gap-2">
             {hygieneItems.map((item) => (
               <Card
@@ -108,8 +108,8 @@ export default function TabsDemo({medicineItems, food_suppliesItems, cleaning_su
   ];
 
   return (
-    <div className="h-[130vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
-      <Tabs tabs={tabs} />
+    <div className="h-[100vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
+      <Tabs contentClassName="h-[100vh]" tabs={tabs} />
     </div>
   );
 }
