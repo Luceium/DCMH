@@ -11,7 +11,13 @@ import { Item } from "@prisma/client";
 import { Edit } from "lucide-react";
 import EditQuantityModal from "./edit-quantity-modal";
 
-const ItemCard = ({ item }: { item: Item }) => {
+const ItemCard = ({
+  item,
+  updateItem,
+}: {
+  item: Item;
+  updateItem: (item: Item) => void;
+}) => {
   return (
     <Dialog>
       <Card
@@ -32,7 +38,7 @@ const ItemCard = ({ item }: { item: Item }) => {
         </AdminWrapper>
       </Card>
       <DialogContent>
-        <EditQuantityModal item={item} />
+        <EditQuantityModal item={item} updateItem={updateItem} />
       </DialogContent>
     </Dialog>
   );

@@ -3,8 +3,14 @@
 import { Tabs } from "./ui/tabs";
 import { Item } from "@prisma/client";
 import ItemCard from "./ItemCard";
+import { useState } from "react";
+import { produce } from "immer";
 
-function generateTab(name: string, items: Item[]) {
+function generateTab(
+  name: string,
+  items: Item[],
+  updateItem: (item: Item) => void
+) {
   return {
     title: name,
     value: name,
@@ -13,7 +19,7 @@ function generateTab(name: string, items: Item[]) {
         <p>{name} Products</p>
         <div className="grid lg:grid-cols-3 grid-cols-2 gap-2">
           {items.map((item) => (
-            <ItemCard key={item.id} item={item} />
+            <ItemCard key={item.id} item={item} updateItem={updateItem} />
           ))}
         </div>
       </div>
@@ -22,12 +28,21 @@ function generateTab(name: string, items: Item[]) {
 }
 
 export default function MainPageTabs({
-  items,
+  items: _items,
 }: {
   items: Record<string, Item[]>;
 }) {
-  const tabs = Object.entries(items).map(([category, items]) => {
-    return generateTab(category, items);
+  const [items, setItems] = useState(_items);
+  const tabs = Object.entries(items).map(([category, i]) => {
+    return generateTab(category, i, (item: Item) => {
+      setItems(
+        produce(items, (draft) => {
+          draft[category][
+            draft[category].findIndex((draftItem) => draftItem.id === item.id)
+          ] = item;
+        })
+      );
+    });
   });
 
   return (

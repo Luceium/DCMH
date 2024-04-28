@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DialogClose, DialogHeader } from "./ui/dialog";
 import { Item } from "@prisma/client";
 import ShimmerButton from "./ui/shimmer-button";
 import prisma from "@/lib/prisma";
 import { updateQuantities } from "@/actions/updateQuantities";
 
-const EditQuantityModal = ({ item }: { item: Item }) => {
+const EditQuantityModal = ({
+  item,
+  updateItem,
+}: {
+  item: Item;
+  updateItem: (item: Item) => void;
+}) => {
   const [newQuantity, setNewQuantity] = useState(item.quantity);
   const [newTargetQuantity, setNewTargetQuantity] = useState(
     item.targetQuantity
@@ -50,7 +56,9 @@ const EditQuantityModal = ({ item }: { item: Item }) => {
       <DialogClose>
         <ShimmerButton
           handleOnClick={async () =>
-            updateQuantities(item.id, newQuantity, newTargetQuantity)
+            updateItem(
+              await updateQuantities(item.id, newQuantity, newTargetQuantity)
+            )
           }
         >
           Save
