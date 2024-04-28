@@ -7,14 +7,14 @@ const Card = ({
   description,
   quantity,
   targetQuantity,
-  arrival,
   imageURL,
   children,
-}: (Item & {children: ReactNode})) => {
+}: Item & { children: ReactNode }) => {
   return (
     <div className="card w-80 glass mb-4">
       <figure>
-        <Image className="w-full h-52 object-cover"
+        <Image
+          className="w-full h-52 object-cover"
           src={imageURL}
           alt={name}
           width={275}

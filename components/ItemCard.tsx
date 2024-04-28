@@ -22,7 +22,6 @@ const ItemCard = ({ item }: { item: Item }) => {
         description={item.description}
         imageURL={item.imageURL}
         category={item.category}
-        arrival={item.arrival}
       >
         <AdminWrapper>
           <DialogTrigger>
