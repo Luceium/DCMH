@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import NavAvatar from "./nav-avatar";
 
 const Nav = () => {
   return (
-    <div>Nav</div>
-  )
-}
+    <div>
+      Nav
+      <NavAvatar />
+    </div>
+  );
+};
 
-export default Nav
+export default Nav;
