@@ -36,7 +36,7 @@ const EditQuantityModal = ({
             type="number"
             name="quantity"
             value={newQuantity}
-            className="input max-w-20"
+            className="input max-w-20 text-white"
           />
         </div>
         <div className="flex flex-row items-center justify-center gap-4">
@@ -49,7 +49,7 @@ const EditQuantityModal = ({
             type="number"
             name="targetQuantity"
             value={newTargetQuantity}
-            className="input max-w-20"
+            className="input max-w-20 text-white"
           />
         </div>
       </div>

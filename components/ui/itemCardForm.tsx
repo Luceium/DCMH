@@ -9,12 +9,12 @@ const ItemCardForm = () => {
         <div className="divider my-1 before:bg-black after:bg-black"/>
         <input
           defaultValue="image url"
-          className="overflow-hidden w-full text-lg rounded-md p-1"
+          className="overflow-hidden w-full text-lg rounded-md p-1 text-primary"
         />
       </div>
       <div className="card-body text-sm">
-        <input className="card-title rounded-md p-1" defaultValue="Name: " />
-        <textarea className="rounded-md p-1" defaultValue="Description: "></textarea>
+        <input className="card-title rounded-md p-1 text-primary" defaultValue="Name: " />
+        <textarea className="rounded-md p-1 text-primary" defaultValue="Description: "></textarea>
         <div className="hidden">
           <Progress value={50} />
           <p>
