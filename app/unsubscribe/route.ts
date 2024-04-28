@@ -14,5 +14,5 @@ export async function GET(req: NextRequest) {
     where: { email: email },
   });
 
-  redirect("/unsubscribe");
+  redirect("/unsubscribed");
 }
