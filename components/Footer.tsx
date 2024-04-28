@@ -58,9 +58,10 @@ const Footer = () => {
         </a>
       </nav>
       <form
-        action={(formData: FormData) =>
-          addToMailingList(formData.get("email") as string)
-        }
+        action={async (formData: FormData) => {
+          "use server";
+          addToMailingList(formData.get("email") as string);
+        }}
       >
         <h6 className="footer-title">Mailing List</h6>
         <fieldset className="form-control w-80">
