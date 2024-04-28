@@ -1,9 +1,10 @@
 import Card from "@/components/card";
 import Nav from "@/components/nav";
-import { Item } from "@/lib/types";
+import { Item, Trend } from "@/lib/types";
 import Image from "next/image";
 
 export default function Home() {
+  const tmpURL = "https://media.istockphoto.com/id/501945961/photo/cough-drops.jpg?s=612x612&w=0&k=20&c=r5OvBT5Ghp2ilzcGY2ljboq0y33ThPspihBiBefiavg="
   const {
     medicalSupplies,
     foodSupplies,
@@ -15,10 +16,12 @@ export default function Home() {
     cleaningSupplies: Item[];
     hygieneSupplies: Item[];
   } = {
-    medicalSupplies: [],
     foodSupplies: [],
     cleaningSupplies: [],
     hygieneSupplies: [],
+    // medicalSupplies: [],
+    // TESTING
+    medicalSupplies: [{name: "Cough Drops", target: 1000, quantity: 500, unverifiedQuantity: 650, description: "Cough drops help our ", trend: Trend.DECREASE, imageURL: tmpURL}]
   };
 
   const sections: { name: string; val: Item[] }[] = [
@@ -33,9 +36,9 @@ export default function Home() {
       <Nav />
         {sections.map((section) => (
           <>
-            <h1>{section.name}</h1>
+            <h1 className="text-2xl">{section.name}</h1>
             {section.val.map((item) => (
-              <div className="full-screen">
+              <div className="full-screen flex flex-row flex-wrap gap-4 m-4">
                 <Card
                   name={item.name}
                   target={item.target}
@@ -43,9 +46,11 @@ export default function Home() {
                   unverifiedQuantity={item.unverifiedQuantity}
                   description={item.description}
                   trend={item.trend}
+                  imageURL={item.imageURL}
                 />
               </div>
             ))}
+            <div className="divider"></div> 
           </>
         ))}
     </>

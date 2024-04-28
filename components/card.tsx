@@ -1,4 +1,5 @@
 import { Item } from "@/lib/types";
+import Image from "next/image";
 import React from "react";
 
 const Card = ({
@@ -8,13 +9,16 @@ const Card = ({
   unverifiedQuantity,
   description,
   trend,
+  imageURL,
 }: Item) => {
   return (
     <div className="card w-96 glass">
       <figure>
-        <img
-          src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+        <Image
+          src={imageURL}
           alt={name}
+          width={384}
+          height={384}
         />
       </figure>
       <div className="card-body">
