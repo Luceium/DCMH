@@ -3,13 +3,16 @@
 import { Tabs } from "./ui/tabs";
 import { Item } from "@prisma/client";
 import ItemCard from "./ItemCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { produce } from "immer";
 import { fetchItems } from "@/actions/fetchItems";
+import { EditContext } from "@/lib/context";
+import ItemCardForm from "./ui/itemCardForm";
 
 function generateTab(
   name: string,
   items: Item[],
+  edit: boolean,
   updateItem: (item: Item) => void
 ) {
   return {
@@ -22,6 +25,7 @@ function generateTab(
           {items.map((item) => (
             <ItemCard key={item.id} item={item} updateItem={updateItem} />
           ))}
+          {edit && <ItemCardForm />}
         </div>
       </div>
     ),
@@ -33,9 +37,10 @@ export default function MainPageTabs({
 }: {
   items: Record<string, Item[]>;
 }) {
+  const { edit } = useContext(EditContext);
   const [items, setItems] = useState(_items);
   const tabs = Object.entries(items).map(([category, i]) => {
-    return generateTab(category, i, (item: Item) => {
+    return generateTab(category, i, edit, (item: Item) => {
       setItems(
         produce(items, (draft) => {
           draft[category][
