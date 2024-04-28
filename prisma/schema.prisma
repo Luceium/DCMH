@@ -28,7 +28,6 @@ model Item {
   description String
   quantity Int 
   targetQuantity Int
-  arrival DateTime
   imageURL String
   inventory Inventory[]
 }
