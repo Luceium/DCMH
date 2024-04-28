@@ -1,6 +1,7 @@
 import { Item } from "@prisma/client";
 import Image from "next/image";
 import React, { ReactNode } from "react";
+import { Progress } from "./ui/progress";
 
 const Card = ({
   name,
@@ -24,6 +25,7 @@ const Card = ({
       <div className="card-body text-sm">
         <p className="card-title">{name}</p>
         <p>{description}</p>
+        <Progress value={quantity/targetQuantity * 100}/>
         {children}
       </div>
     </div>
