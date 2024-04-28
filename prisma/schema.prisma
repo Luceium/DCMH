@@ -29,6 +29,7 @@ model Item {
   potentialQuantity Int 
   targetQuantity Int
   arrival DateTime
+  imageURL String
   inventory Inventory[]
 }
 
@@ -36,4 +37,13 @@ model Inventory {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   itemId String @db.ObjectId
   item Item @relation(fields: [itemId], references: [id])
+  quantity Int
+  date DateTime
+  trend Trend @default(CONSTANT)
+}
+
+enum Trend{
+  DECREASE
+  INCREASE
+  CONSTANT
 }

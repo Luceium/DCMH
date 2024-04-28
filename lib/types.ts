@@ -1,10 +1,10 @@
 export interface Item {
     name: string;
-    target: number;
-    quantity: number;
-    unverifiedQuantity: number;
     description: string;
-    trend: Trend;
+    quantity: number;
+    potentialQuantity: number;
+    targetQuantity: number;
+    arrival: Date;
     imageURL: string;
 }
 
