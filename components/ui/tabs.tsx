@@ -33,7 +33,7 @@ export const Tabs = ({
         const activeIndex = propTabs.findIndex(
           (tab) => tab.value === tabs[0].value
         );
-        const newTabs = draft.splice(activeIndex, 1);
+        draft.splice(activeIndex, 1);
         draft.unshift(propTabs[activeIndex]);
       });
     });
