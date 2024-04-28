@@ -16,9 +16,9 @@ function generateTab(
     title: name,
     value: name,
     content: (
-      <div className="w-full flex flex-col relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-gray-700 to-gray-900 gap-4 overflow-y-scroll">
+      <div className="w-full flex flex-col relative h-full rounded-2xl p-6 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-gray-700 to-gray-900 gap-4 overflow-y-scroll">
         <p>{name} Products</p>
-        <div className="grid lg:grid-cols-3 grid-cols-2 gap-2">
+        <div className="flex justify-center flex-wrap gap-5">
           {items.map((item) => (
             <ItemCard key={item.id} item={item} updateItem={updateItem} />
           ))}
