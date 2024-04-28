@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs } from "./ui/tabs";
-import { Category, Item } from "@prisma/client";
+import { Item } from "@prisma/client";
 import ItemCard from "./ItemCard";
 
 function generateTab(name: string, items: Item[]) {
@@ -24,14 +24,11 @@ function generateTab(name: string, items: Item[]) {
 export default function MainPageTabs({
   items,
 }: {
-  items: Record<Category, Item[]>;
+  items: Record<string, Item[]>;
 }) {
-  const tabs = [
-    generateTab("Food & Supplies", items.FOOD_SUPPLIES),
-    generateTab("Cleaning & Sanitizing", items.CLEANING_SANITIZING),
-    generateTab("Hygiene", items.HYGIENE),
-    generateTab("Medicine", items.MEDICINE),
-  ];
+  const tabs = Object.entries(items).map(([category, items]) => {
+    return generateTab(category, items);
+  });
 
   return (
     <div className="h-[100vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
