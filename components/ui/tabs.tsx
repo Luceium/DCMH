@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { produce } from "immer";
+import { useSearchParams } from "next/navigation";
 
 type Tab = {
   title: string;
@@ -24,8 +25,19 @@ export const Tabs = ({
   tabClassName?: string;
   contentClassName?: string;
 }) => {
-  const [active, setActive] = useState<Tab>(propTabs[0]);
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
+  const getTabFromURL = (tabs: Tab[]) => {
+    const queryParam = useSearchParams().get("tab");
+    const selectedTab = tabs.find((tab) => queryParam === tab.title);
+    if (selectedTab) {
+      const idx = tabs.indexOf(selectedTab);
+      tabs.splice(idx, 1);
+      tabs.unshift(selectedTab);
+      setTabs(tabs);
+    }
+    return selectedTab || tabs[0];
+  };
+  const [active, setActive] = useState<Tab>(getTabFromURL(propTabs));
 
   useEffect(() => {
     setTabs((tabs) => {
