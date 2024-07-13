@@ -1,7 +1,30 @@
+"use client";
+
 import React from "react";
 import { Progress } from "./progress";
-import { addItem, addItemFromForm } from "@/actions/editItems";
+import { addItemFromForm } from "@/actions/editItems";
 import { Item } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./form";
+import { Input } from "./input";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "./button";
+
+export const formSchema = z.object({
+  imageURL: z.string().url(),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  quantity: z.number().positive(),
+  targetQuantity: z.number().positive(),
+});
 
 const ItemCardForm = ({
   category,
@@ -10,59 +33,113 @@ const ItemCardForm = ({
   category: string;
   addItem: (item: Item) => void;
 }) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    mode: "all",
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      imageURL: "",
+      name: "",
+      description: "",
+      quantity: 50,
+      targetQuantity: 100,
+    },
+  });
+
+  const watchQuantity = form.watch("quantity");
+  const watchTargetQuality = form.watch("targetQuantity");
+
   return (
-    <div className="card w-80 bg-gray-500 mb-4">
-      <form
-        className="p-5"
-        action={async (formData) => {
-          addItem(await addItemFromForm(formData, category));
-        }}
-      >
-        <p className="w-full text-center">Add New Item</p>
-        <div className="divider my-1 before:bg-black after:bg-black" />
-        <div className="h-[200px] bg-gray-500 w-full">
-          <input
+    <div className="card w-80 bg-gray-500 mb-4 p-4">
+      <p className="text-center">Add New Item</p>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(
+            async (values: z.infer<typeof formSchema>) => {
+              addItem(await addItemFromForm(values, category));
+            }
+          )}
+        >
+          <FormField
+            control={form.control}
             name="imageURL"
-            placeholder="image url"
-            className="w-full overflow-hidden text-lg rounded-md p-1"
-          ></input>
-        </div>
-        <div className="card-body text-sm p-0">
-          <input
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image URL</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="name"
-            className="card-title p-1 rounded-md"
-            placeholder="Name: "
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <textarea
+          <FormField
+            control={form.control}
             name="description"
-            placeholder="Description: "
-            className="overflow-hidden text-lg input p-1 border rounded-md"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <div>
-            <Progress value={50} />
-            <p className="pt-2">
-              <input
-                name="quantity"
-                type="number"
-                defaultValue={50}
-                className="w-12 text-lg input p-1 border rounded-md text-center"
-              />
-              &nbsp; / &nbsp;
-              <input
-                name="targetQuantity"
-                type="number"
-                defaultValue={100}
-                className="w-12 text-lg input p-1 border rounded-md text-center"
-              />
-            </p>
+=
+          <FormLabel>Quantity</FormLabel>
+          <Progress value={(watchQuantity / watchTargetQuality) * 100} />
+          <div className="flex mt-2">
+          <FormField
+            control={form.control}
+            name="quantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <span className="mx-2 font-normal">/</span>
+          <FormField
+            control={form.control}
+            name="targetQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           </div>
-          <div className="card-actions justify-end ">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-        </div>
-      </form>
+
+          <Button type="submit">Add</Button>
+        </form>
+      </Form>
     </div>
   );
 };

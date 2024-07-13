@@ -1,7 +1,9 @@
 "use server";
+import { formSchema } from "@/components/ui/itemCardForm";
 import prisma from "@/lib/prisma";
 import { Item } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 export async function deleteItem(itemId: string) {
   const deleteItem = await prisma.item.delete({
@@ -19,13 +21,12 @@ export async function addItem(item: Omit<Item, "id">) {
   return newItem;
 }
 
-export async function addItemFromForm(formData: FormData, category: string) {
+export async function addItemFromForm(
+  values: z.infer<typeof formSchema>,
+  category: string
+) {
   const newItem = {
-    name: formData.get("name") as string,
-    description: formData.get("description") as string,
-    imageURL: formData.get("imageURL") as string,
-    quantity: Number(formData.get("quantity")),
-    targetQuantity: Number(formData.get("targetQuantity")),
+    ...values,
     category: category,
   };
 
