@@ -28,10 +28,13 @@ export const Tabs = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  const getTabFromURL = (tabs: Tab[]) =>
-    tabs.find((tab) => searchParams.get("tab") === tab.title);
+  const getTabFromURL = (tabs: Tab[]) => {
+    const tab = window.location.toString().split("?tab=")[1];
+    const decodedTab = decodeURI(tab ?? "");
+
+    return tabs.find((tab) => decodedTab === tab.title);
+  };
 
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
   const [active, setActive] = useState<Tab>(getTabFromURL(propTabs) ?? tabs[0]);
