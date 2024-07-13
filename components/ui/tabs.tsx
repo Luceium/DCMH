@@ -4,7 +4,8 @@ import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { produce } from "immer";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Tab = {
   title: string;
@@ -25,19 +26,16 @@ export const Tabs = ({
   tabClassName?: string;
   contentClassName?: string;
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const getTabFromURL = (tabs: Tab[]) =>
+    tabs.find((tab) => searchParams.get("tab") === tab.title);
+
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
-  const getTabFromURL = (tabs: Tab[]) => {
-    const queryParam = useSearchParams().get("tab");
-    const selectedTab = tabs.find((tab) => queryParam === tab.title);
-    if (selectedTab) {
-      const idx = tabs.indexOf(selectedTab);
-      tabs.splice(idx, 1);
-      tabs.unshift(selectedTab);
-      setTabs(tabs);
-    }
-    return selectedTab || tabs[0];
-  };
-  const [active, setActive] = useState<Tab>(getTabFromURL(propTabs));
+  const [active, setActive] = useState<Tab>(getTabFromURL(propTabs) ?? tabs[0]);
+  useEffect(() => router.push(`${pathname}?tab=${active.title}`), [active]);
 
   useEffect(() => {
     setTabs((tabs) => {
