@@ -1,17 +1,22 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { Item } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function deleteItem(itemId: string) {
-  return await prisma.item.delete({
+  const deleteItem = await prisma.item.delete({
     where: { id: itemId },
   });
+  revalidatePath("/");
+  return deleteItem;
 }
 
 export async function addItem(item: Omit<Item, "id">) {
-  return await prisma.item.create({
+  const newItem = await prisma.item.create({
     data: item,
   });
+  revalidatePath("/");
+  return newItem;
 }
 
 export async function addItemFromForm(formData: FormData, category: string) {
