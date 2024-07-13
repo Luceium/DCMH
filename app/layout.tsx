@@ -11,7 +11,7 @@ import { EditContext, EditContextProvider } from "@/lib/context";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Pantry Patrol",
+  title: "DCMH Pantry",
   description: "Inventory Management for DCMH",
 };
 

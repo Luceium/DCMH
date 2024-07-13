@@ -1,4 +1,4 @@
-# Pantry Patrol
+# DCMH Pantry
 
 an inventory management application designed for Davis Community Meals & Housing (DCMH)
 
@@ -6,4 +6,4 @@ winner of "Best Use of PropelAuth" at [HackDavis 2024](https://hackdavis-2024.de
 
 check out our [Devpost Submission](https://devpost.com/software/pantry-patrol-7qhujk)
 
-###### *Live now at [pantry.daviscommunitymeals.org](pantry.daviscommunitymeals.org)*
+###### _Live now at [pantry.daviscommunitymeals.org](https://pantry.daviscommunitymeals.org)_

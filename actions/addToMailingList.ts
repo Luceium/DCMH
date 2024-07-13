@@ -12,7 +12,8 @@ export default async function addToMailingList(email: string) {
       subject: "Thanks for joining us!",
       html: `<p>Thanks for joining our mailing list! We'll keep you updated on all the latest news and events.<br>We appreciate all our donors and are honored that you want to know when we need more donations.<br>Feel free to <a href='https://pantrypatrol.tech/unsubscribe?email="${email}"'>unsubscribe</a> at any time </p>`,
       headers: {
-        "List-Unsubscribe": "<https://pantrypatrol.tech/unsubscribe>",
+        "List-Unsubscribe":
+          "<https://pantry.daviscoummunitymeals.org/unsubscribe>",
       },
     }),
   ]);
