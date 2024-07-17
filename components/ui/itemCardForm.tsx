@@ -22,7 +22,7 @@ export const formSchema = z.object({
   imageURL: z.string().url(),
   name: z.string().min(1),
   description: z.string().min(1),
-  quantity: z.number().positive(),
+  quantity: z.number().nonnegative(),
   targetQuantity: z.number().positive(),
 });
 
@@ -98,45 +98,43 @@ const ItemCardForm = ({
               </FormItem>
             )}
           />
-=
-          <FormLabel>Quantity</FormLabel>
+          =<FormLabel>Quantity</FormLabel>
           <Progress value={(watchQuantity / watchTargetQuality) * 100} />
           <div className="flex mt-2">
-          <FormField
-            control={form.control}
-            name="quantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <span className="mx-2 font-normal">/</span>
-          <FormField
-            control={form.control}
-            name="targetQuantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="quantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <span className="mx-2 font-normal">/</span>
+            <FormField
+              control={form.control}
+              name="targetQuantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-
           <Button type="submit">Add</Button>
         </form>
       </Form>
