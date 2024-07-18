@@ -32,7 +32,9 @@ function generateTab(
               deleteItem={deleteItem}
             />
           ))}
-          {edit && <ItemCardForm category={name} addItem={addItem} />}
+          {edit && (
+            <ItemCardForm partialItem={{ category: name }} addItem={addItem} />
+          )}
         </div>
       </div>
     ),

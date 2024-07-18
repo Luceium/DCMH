@@ -13,6 +13,15 @@ export async function deleteItem(itemId: string) {
   return deleteItem;
 }
 
+export async function toggleItemPriority(itemId: string) {
+  const prioritizedItem = await prisma.item.update({
+    where: { id: itemId },
+    data: { priority: !item.priority },
+  });
+  revalidatePath("/");
+  return prioritizedItem;
+}
+
 export async function addItem(item: Omit<Item, "id">) {
   const newItem = await prisma.item.create({
     data: item,

@@ -1,18 +1,12 @@
-import React, { useContext } from "react";
-import AdminWrapper from "@/components/adminWrapper";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import React, { useContext, useEffect } from "react";
 import Card from "./card";
 import { Item } from "@prisma/client";
-import EditQuantityModal from "./edit-quantity-modal";
 import { fetchItem } from "@/actions/fetchItems";
-import { XSVG } from "./svg";
+import { EditSVG, StarSVG, XSVG } from "./svg";
 import { EditContext } from "@/lib/context";
-import { deleteItem } from "@/actions/editItems";
+import { deleteItem, toggleItemPriority } from "@/actions/editItems";
+import ItemCardForm from "./ui/itemCardForm";
+import isAdmin from "@/lib/is-admin";
 
 const ItemCard = ({
   item,
@@ -23,47 +17,54 @@ const ItemCard = ({
   updateItem: (item: Item) => void;
   deleteItem: (item: Item) => void;
 }) => {
+  const [editCardMode, setEditCardMode] = React.useState(false);
   const { edit } = useContext(EditContext);
+  useEffect(() => {
+    setEditCardMode(false);
+  }, [edit]);
 
-  return (
-    <Dialog
-      onOpenChange={async (open) => {
-        if (open) {
-          const newItem = await fetchItem(item.id);
-          if (newItem) updateItem(newItem);
-        }
-      }}
+  return edit && editCardMode ? (
+    <ItemCardForm partialItem={item} addItem={updateItem} isUpdate />
+  ) : (
+    <Card
+      id={item.id}
+      name={item.name}
+      targetQuantity={item.targetQuantity}
+      quantity={item.quantity}
+      description={item.description}
+      imageURL={item.imageURL}
+      category={item.category}
     >
-      <Card
-        id={item.id}
-        name={item.name}
-        targetQuantity={item.targetQuantity}
-        quantity={item.quantity}
-        description={item.description}
-        imageURL={item.imageURL}
-        category={item.category}
-      >
-        {edit && (
+      {edit && (
+        <div className="absolute top-0 right-0 p-2 text-black bg-opacity-35 bg-white rounded-2xl">
+          <button
+            onClick={async () => {
+              await toggleItemPriority(item.id);
+            }}
+            className="px-1"
+          >
+            <StarSVG />
+          </button>
+          <button
+            onClick={async () => {
+              setEditCardMode(true);
+            }}
+            className="px-1"
+          >
+            <EditSVG />
+          </button>
           <button
             onClick={async () => {
               await deleteItem(item.id);
               deleteItemFromUI(item);
             }}
-            className="absolute top-0 right-0 p-2 text-black"
+            className="px-1"
           >
             <XSVG />
           </button>
-        )}
-        <AdminWrapper>
-          <div className="card-actions justify-end">
-            <DialogTrigger className="btn btn-primary">Update</DialogTrigger>
-          </div>
-        </AdminWrapper>
-      </Card>
-      <DialogContent>
-        <EditQuantityModal item={item} updateItem={updateItem} />
-      </DialogContent>
-    </Dialog>
+        </div>
+      )}
+    </Card>
   );
 };
 

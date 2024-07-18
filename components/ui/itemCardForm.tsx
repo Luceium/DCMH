@@ -26,22 +26,34 @@ export const formSchema = z.object({
   targetQuantity: z.number().positive(),
 });
 
-const ItemCardForm = ({
-  category,
-  addItem,
-}: {
+type PartialItem = {
+  id?: string;
+  name?: string;
   category: string;
+  description?: string;
+  quantity?: number;
+  targetQuantity?: number;
+  imageURL?: string;
+};
+
+const ItemCardForm = ({
+  partialItem,
+  addItem,
+  isUpdate,
+}: {
+  partialItem: PartialItem;
   addItem: (item: Item) => void;
+  isUpdate?: boolean;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
     defaultValues: {
-      imageURL: "",
-      name: "",
-      description: "",
-      quantity: 50,
-      targetQuantity: 100,
+      imageURL: partialItem.imageURL ?? "",
+      name: partialItem.name ?? "",
+      description: partialItem.description ?? "",
+      quantity: partialItem.quantity ?? 50,
+      targetQuantity: partialItem.targetQuantity ?? 100,
     },
   });
 
@@ -50,12 +62,12 @@ const ItemCardForm = ({
 
   return (
     <div className="card w-80 bg-gray-500 mb-4 p-4">
-      <p className="text-center">Add New Item</p>
+      {!isUpdate && <p className="text-center">Add New Item</p>}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(
             async (values: z.infer<typeof formSchema>) => {
-              addItem(await addItemFromForm(values, category));
+              addItem(await addItemFromForm(values, partialItem.category));
             }
           )}
         >
@@ -98,7 +110,7 @@ const ItemCardForm = ({
               </FormItem>
             )}
           />
-          =<FormLabel>Quantity</FormLabel>
+          <FormLabel>Quantity</FormLabel>
           <Progress value={(watchQuantity / watchTargetQuality) * 100} />
           <div className="flex mt-2">
             <FormField
@@ -135,7 +147,7 @@ const ItemCardForm = ({
               )}
             />
           </div>
-          <Button type="submit">Add</Button>
+          <Button type="submit">{isUpdate ? "Update" : "Add"}</Button>
         </form>
       </Form>
     </div>
