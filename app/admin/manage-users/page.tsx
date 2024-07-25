@@ -19,7 +19,8 @@ export default async function ManageUsers() {
   const org = user.getOrgByName("DCMH")!;
 
   const api = getPropelAuthApis();
-  const members = (await api.fetchUsersInOrg({ orgId: org.orgId })).users;
+  // TODO: search, sort?, paginate
+  const members = (await api.fetchUsersInOrg({ orgId: org.orgId, pageSize: 100 })).users;
 
   return (
     <main className="px-8 sm:px-24 py-8">
