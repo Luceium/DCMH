@@ -68,16 +68,15 @@ export default function UserTable({
                       })
                     );
 
-                    try {
-                      await setUserRole(m.userId, value);
-                    } catch (e) {
-                      if (e instanceof Error) {
-                        toast({
-                          title: "Uh oh! Something went wrong.",
-                          description: e.message,
-                          variant: "destructive",
-                        });
-                      }
+                    const { error } = await setUserRole(m.userId, value).catch(
+                      () => ({ error: "Unknown error occurred." })
+                    );
+                    if (error) {
+                      toast({
+                        title: "Uh oh! Something went wrong.",
+                        description: error,
+                        variant: "destructive",
+                      });
                       setMembers((members) =>
                         produce(members, (draft) => {
                           const index = draft.findIndex(
