@@ -36,13 +36,7 @@ type PartialItem = {
   imageURL?: string;
 };
 
-const ItemCardForm = ({
-  partialItem,
-  addItem,
-}: {
-  partialItem: PartialItem;
-  addItem: (item: Item) => void;
-}) => {
+const ItemCardForm = ({ partialItem }: { partialItem: PartialItem }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
