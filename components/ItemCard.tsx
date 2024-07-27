@@ -7,6 +7,7 @@ import { EditContext } from "@/lib/context";
 import { deleteItem, toggleItemPriority } from "@/actions/editItems";
 import ItemCardForm from "./ui/itemCardForm";
 import isAdmin from "@/lib/is-admin";
+import CardEditBar from "./CardEditBar";
 
 const ItemCard = ({
   item,
@@ -24,7 +25,7 @@ const ItemCard = ({
   }, [edit]);
 
   return edit && editCardMode ? (
-    <ItemCardForm partialItem={item} addItem={updateItem} />
+    <ItemCardForm partialItem={item} />
   ) : (
     <Card
       id={item.id}
@@ -35,7 +36,7 @@ const ItemCard = ({
       imageURL={item.imageURL}
       category={item.category}
     >
-      {edit && (
+      {/* {edit && (
         <div className="absolute top-0 right-0 p-2 text-black bg-opacity-35 bg-white rounded-2xl">
           <button
             onClick={async () => {
@@ -63,6 +64,13 @@ const ItemCard = ({
             <XSVG />
           </button>
         </div>
+      )} */}
+      {edit && (
+        <CardEditBar
+          item={item}
+          setEditCardMode={setEditCardMode}
+          deleteItemFromUI={deleteItemFromUI}
+        />
       )}
     </Card>
   );
