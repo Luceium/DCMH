@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Progress } from "./progress";
-import { addItemFromForm } from "@/actions/editItems";
+import { submitItemFromForm } from "@/actions/editItems";
 import { Item } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
@@ -39,11 +39,9 @@ type PartialItem = {
 const ItemCardForm = ({
   partialItem,
   addItem,
-  isUpdate,
 }: {
   partialItem: PartialItem;
   addItem: (item: Item) => void;
-  isUpdate?: boolean;
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
@@ -59,6 +57,7 @@ const ItemCardForm = ({
 
   const watchQuantity = form.watch("quantity");
   const watchTargetQuality = form.watch("targetQuantity");
+  const isUpdate: boolean = !!partialItem.id;
 
   return (
     <div className="card w-80 bg-gray-500 mb-4 p-4">
@@ -67,7 +66,11 @@ const ItemCardForm = ({
         <form
           onSubmit={form.handleSubmit(
             async (values: z.infer<typeof formSchema>) => {
-              addItem(await addItemFromForm(values, partialItem.category));
+              await submitItemFromForm(
+                values,
+                partialItem.category,
+                partialItem?.id
+              );
             }
           )}
         >
