@@ -36,7 +36,15 @@ type PartialItem = {
   imageURL?: string;
 };
 
-const ItemCardForm = ({ partialItem }: { partialItem: PartialItem }) => {
+type ItemCardFormProps = {
+  partialItem: PartialItem;
+  setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ItemCardForm: React.FC<ItemCardFormProps> = ({
+  partialItem,
+  setEditCardMode,
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
@@ -65,6 +73,17 @@ const ItemCardForm = ({ partialItem }: { partialItem: PartialItem }) => {
                 partialItem.category,
                 partialItem?.id
               );
+
+              if (isUpdate) {
+                // visually update the item UI
+                partialItem.name = values.name;
+                partialItem.description = values.description;
+                partialItem.quantity = values.quantity;
+                partialItem.targetQuantity = values.targetQuantity;
+                partialItem.imageURL = values.imageURL;
+
+                setEditCardMode!(false);
+              }
             }
           )}
         >

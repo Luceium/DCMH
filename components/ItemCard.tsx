@@ -25,7 +25,7 @@ const ItemCard = ({
   }, [edit]);
 
   return edit && editCardMode ? (
-    <ItemCardForm partialItem={item} />
+    <ItemCardForm partialItem={item} setEditCardMode={setEditCardMode} />
   ) : (
     <Card
       id={item.id}
