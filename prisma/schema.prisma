@@ -25,6 +25,7 @@ model Item {
   id             String      @id @default(auto()) @map("_id") @db.ObjectId
   name           String
   category       String
+  priority       Boolean     @default(false)
   description    String
   quantity       Int
   targetQuantity Int
