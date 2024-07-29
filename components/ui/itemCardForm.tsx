@@ -83,6 +83,10 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
               } else {
                 addItem?.(item);
               }
+
+              if (partialItem.category != values.category) {
+                setCurrentTab(values.category);
+              }
             })}
           >
             <FormField
