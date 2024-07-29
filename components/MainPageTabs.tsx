@@ -26,8 +26,6 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
             item;
         })
       );
-
-      console.log(items);
     }
     function addItem(item: Item) {
       setItems(
