@@ -16,7 +16,6 @@ type Tab = {
 };
 
 export default function MainPageTabs({ items: _items }: { items: Item[] }) {
-  const { edit } = useContext(EditContext);
   const [items, setItems] = useState(_items);
 
   function generateTab(name: string, categoryItems: Item[]): Tab {
@@ -63,12 +62,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
                 deleteItem={deleteItem}
               />
             ))}
-            {edit && (
-              <ItemCardForm
-                partialItem={{ category: name }}
-                addItem={addItem}
-              />
-            )}
+            <ItemCardForm partialItem={{ category: name }} addItem={addItem} />
           </div>
         </div>
       ),

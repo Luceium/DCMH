@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import { Progress } from "./progress";
 import { submitItemFromForm } from "@/actions/editItems";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
 import { Item } from "@prisma/client";
+import { EditContext } from "@/lib/context";
 
 export const formSchema = z.object({
   imageURL: z.string().url(),
@@ -52,6 +53,8 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
   addItem,
   updateItem,
 }) => {
+  const { edit } = useContext(EditContext);
+
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
@@ -69,105 +72,107 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
   const isUpdate: boolean = !!partialItem.id;
 
   return (
-    <div className="card w-80 bg-gray-500 mb-4 p-4">
-      {!isUpdate && <p className="text-center">Add New Item</p>}
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(async (values: FormSchema) => {
-            const item = await submitItemFromForm(
-              values,
-              partialItem.category,
-              partialItem?.id
-            );
+    edit && (
+      <div className="card w-80 bg-gray-500 mb-4 p-4">
+        {!isUpdate && <p className="text-center">Add New Item</p>}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(async (values: FormSchema) => {
+              const item = await submitItemFromForm(
+                values,
+                partialItem.category,
+                partialItem?.id
+              );
 
-            if (isUpdate) {
-              updateItem?.(item);
-              setEditCardMode?.(false);
-            } else {
-              addItem?.(item);
-            }
-          })}
-        >
-          <FormField
-            control={form.control}
-            name="imageURL"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Image URL</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormLabel>Quantity</FormLabel>
-          <Progress value={(watchQuantity / watchTargetQuality) * 100} />
-          <div className="flex mt-2">
+              if (isUpdate) {
+                updateItem?.(item);
+                setEditCardMode?.(false);
+              } else {
+                addItem?.(item);
+              }
+            })}
+          >
             <FormField
               control={form.control}
-              name="quantity"
+              name="imageURL"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Image URL</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <span className="mx-2 font-normal">/</span>
             <FormField
               control={form.control}
-              name="targetQuantity"
+              name="name"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-          <Button type="submit">{isUpdate ? "Update" : "Add"}</Button>
-        </form>
-      </Form>
-    </div>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormLabel>Quantity</FormLabel>
+            <Progress value={(watchQuantity / watchTargetQuality) * 100} />
+            <div className="flex mt-2">
+              <FormField
+                control={form.control}
+                name="quantity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <span className="mx-2 font-normal">/</span>
+              <FormField
+                control={form.control}
+                name="targetQuantity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button type="submit">{isUpdate ? "Update" : "Add"}</Button>
+          </form>
+        </Form>
+      </div>
+    )
   );
 };
 
