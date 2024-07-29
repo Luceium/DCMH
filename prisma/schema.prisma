@@ -40,7 +40,6 @@ model Inventory {
   quantity Int
   date     DateTime
   trend    Trend    @default(CONSTANT)
-  priority Boolean  @default(false)
 }
 
 enum Trend {
