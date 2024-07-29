@@ -81,7 +81,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
 
       const categories = new Set(items.map((item) => item.category));
       categories.forEach((category) => {
-        const existingTabIndex = existingTabs.findIndex(
+        const existingTabIndex = draft.findIndex(
           (tab) => tab.value === category
         );
         const categoryItems = items.filter(
