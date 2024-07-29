@@ -9,82 +9,79 @@ import { fetchItems } from "@/actions/fetchItems";
 import { EditContext } from "@/lib/context";
 import ItemCardForm from "./ui/itemCardForm";
 
-function generateTab(
-  name: string,
-  items: Item[],
-  edit: boolean,
-  updateItem: (item: Item) => void,
-  addItem: (item: Item) => void,
-  deleteItem: (item: Item) => void
-) {
-  return {
-    title: name,
-    value: name,
-    content: (
-      <div className="w-full flex flex-col relative h-full rounded-2xl p-6 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-gray-700 to-gray-900 gap-4 overflow-y-scroll">
-        <p>{name} Products</p>
-        <div className="flex justify-center flex-wrap gap-5">
-          {items.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              updateItem={updateItem}
-              deleteItem={deleteItem}
-            />
-          ))}
-          {edit && (
-            <ItemCardForm partialItem={{ category: name }} addItem={addItem} />
-          )}
-        </div>
-      </div>
-    ),
-  };
-}
-
-export default function MainPageTabs({
-  items: _items,
-}: {
-  items: Record<string, Item[]>;
-}) {
+export default function MainPageTabs({ items: _items }: { items: Item[] }) {
   const { edit } = useContext(EditContext);
   const [items, setItems] = useState(_items);
 
-  const tabs = Object.entries(items).map(([category, i]) => {
-    function updateItemUI(item: Item) {
+  function generateTab(name: string, categoryItems: Item[]) {
+    function updateItem(item: Item) {
       setItems(
         produce(items, (draft) => {
-          draft[category][
-            draft[category].findIndex((draftItem) => draftItem.id === item.id)
-          ] = item;
+          draft[draft.findIndex((draftItem) => draftItem.id === item.id)] =
+            item;
+        })
+      );
+
+      console.log(items);
+    }
+    function addItem(item: Item) {
+      setItems(
+        produce(items, (draft) => {
+          draft.push(item);
         })
       );
     }
-    function addItemUI(item: Item) {
+    function deleteItem(item: Item) {
       setItems(
         produce(items, (draft) => {
-          draft[category].push(item);
-        })
-      );
-    }
-    function deleteItemUI(item: Item) {
-      setItems(
-        produce(items, (draft) => {
-          draft[category].splice(
-            draft[category].findIndex((draftItem) => draftItem.id === item.id),
+          draft.splice(
+            draft.findIndex((draftItem) => draftItem.id === item.id),
             1
           );
         })
       );
     }
 
-    return generateTab(
-      category,
-      i,
-      edit,
-      updateItemUI,
-      addItemUI,
-      deleteItemUI
-    );
+    return {
+      title: name,
+      value: name,
+      content: (
+        <div className="w-full flex flex-col relative h-full rounded-2xl p-6 text-xl md:text-4xl font-bold bg-gradient-to-br from-gray-700 to-gray-900 gap-4 overflow-y-scroll">
+          <p>{name} Products</p>
+          <div className="flex justify-center flex-wrap gap-5">
+            {categoryItems.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                updateItem={updateItem}
+                deleteItem={deleteItem}
+              />
+            ))}
+            {edit && (
+              <ItemCardForm
+                partialItem={{ category: name }}
+                addItem={addItem}
+              />
+            )}
+          </div>
+        </div>
+      ),
+    };
+  }
+
+  const tabs = [];
+
+  const prioritizedItems = items.filter((item) => item.priority);
+  if (prioritizedItems.length > 0)
+    tabs.push(generateTab("Prioritized", prioritizedItems));
+
+  // get all categories
+  const categories = items
+    .map((item) => item.category)
+    .filter((value, index, self) => self.indexOf(value) === index);
+  categories.forEach((category) => {
+    const categoryItems = items.filter((item) => item.category === category);
+    tabs.push(generateTab(category, categoryItems));
   });
 
   useEffect(() => {
