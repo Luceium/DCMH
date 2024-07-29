@@ -31,44 +31,7 @@ const ItemCard = ({
       setEditCardMode={setEditCardMode}
     />
   ) : (
-    <Card
-      id={item.id}
-      name={item.name}
-      targetQuantity={item.targetQuantity}
-      quantity={item.quantity}
-      description={item.description}
-      imageURL={item.imageURL}
-      category={item.category}
-    >
-      {/* {edit && (
-        <div className="absolute top-0 right-0 p-2 text-black bg-opacity-35 bg-white rounded-2xl">
-          <button
-            onClick={async () => {
-              await toggleItemPriority(item.id);
-            }}
-            className="px-1"
-          >
-            <StarSVG />
-          </button>
-          <button
-            onClick={async () => {
-              setEditCardMode(true);
-            }}
-            className="px-1"
-          >
-            <EditSVG />
-          </button>
-          <button
-            onClick={async () => {
-              await deleteItem(item.id);
-              deleteItemFromUI(item);
-            }}
-            className="px-1"
-          >
-            <XSVG />
-          </button>
-        </div>
-      )} */}
+    <Card item={item}>
       {edit && (
         <CardEditBar
           item={item}

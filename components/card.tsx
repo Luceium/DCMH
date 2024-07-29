@@ -1,16 +1,11 @@
-import { Item } from "@prisma/client";
-import Image from "next/image";
 import React, { ReactNode } from "react";
 import { Progress } from "./ui/progress";
+import Image from "next/image";
+import { Item } from "@prisma/client";
 
-const Card = ({
-  name,
-  description,
-  quantity,
-  targetQuantity,
-  imageURL,
-  children,
-}: Item & { children: ReactNode }) => {
+const Card = ({ item, children }: { item: Item; children: ReactNode }) => {
+  const { name, description, quantity, targetQuantity, imageURL } = item;
+
   return (
     <div className="card w-80 bg-gray-500 mb-4">
       <figure>

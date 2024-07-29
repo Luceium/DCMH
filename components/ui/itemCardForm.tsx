@@ -28,7 +28,7 @@ export const formSchema = z.object({
 
 export type FormSchema = z.infer<typeof formSchema>;
 
-type PartialItem = {
+export type PartialItem = {
   id?: string;
   name?: string;
   category: string;
