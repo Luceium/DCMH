@@ -98,6 +98,12 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
           draft[existingTabIndex] = generateTab(category, categoryItems);
         }
       });
+
+      existingTabs.forEach((existingTab, existingIndex) => {
+        if (!categories.has(existingTab.value)) {
+          draft[existingIndex] = generateTab(existingTab.value, []);
+        }
+      });
     });
   }
 
