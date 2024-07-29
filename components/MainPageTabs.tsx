@@ -9,11 +9,17 @@ import { fetchItems } from "@/actions/fetchItems";
 import { EditContext } from "@/lib/context";
 import ItemCardForm from "./ui/itemCardForm";
 
+type Tab = {
+  title: string;
+  value: string;
+  content: JSX.Element;
+};
+
 export default function MainPageTabs({ items: _items }: { items: Item[] }) {
   const { edit } = useContext(EditContext);
   const [items, setItems] = useState(_items);
 
-  function generateTab(name: string, categoryItems: Item[]) {
+  function generateTab(name: string, categoryItems: Item[]): Tab {
     function updateItem(item: Item) {
       setItems(
         produce(items, (draft) => {
@@ -69,20 +75,37 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
     };
   }
 
-  const tabs = [];
+  function generateAllTabs(existingTabs: Tab[]) {
+    return produce(existingTabs, (draft) => {
+      const prioritizedItems = items.filter((item) => item.priority);
+      if (draft[0]?.value !== "Prioritized") {
+        if (prioritizedItems.length > 0)
+          draft.splice(0, 0, generateTab("Prioritized", prioritizedItems));
+      } else {
+        draft[0] = generateTab("Prioritized", prioritizedItems);
+      }
 
-  const prioritizedItems = items.filter((item) => item.priority);
-  if (prioritizedItems.length > 0)
-    tabs.push(generateTab("Prioritized", prioritizedItems));
+      const categories = new Set(items.map((item) => item.category));
+      categories.forEach((category) => {
+        const existingTabIndex = existingTabs.findIndex(
+          (tab) => tab.value === category
+        );
+        const categoryItems = items.filter(
+          (item) => item.category === category
+        );
+        if (existingTabIndex === -1) {
+          draft.push(generateTab(category, categoryItems));
+        } else {
+          draft[existingTabIndex] = generateTab(category, categoryItems);
+        }
+      });
+    });
+  }
 
-  // get all categories
-  const categories = items
-    .map((item) => item.category)
-    .filter((value, index, self) => self.indexOf(value) === index);
-  categories.forEach((category) => {
-    const categoryItems = items.filter((item) => item.category === category);
-    tabs.push(generateTab(category, categoryItems));
-  });
+  const [tabs, setTabs] = useState<Tab[]>(generateAllTabs([]));
+  useEffect(() => {
+    setTabs((oldTabs) => generateAllTabs(oldTabs));
+  }, [items]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
