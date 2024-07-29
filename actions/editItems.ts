@@ -58,13 +58,7 @@ export async function updateItem(item: Omit<Item, "priority">) {
  */
 export async function submitItemFromForm(
   values: z.infer<typeof formSchema>,
-  category: string,
   id?: string
 ) {
-  const newItem = {
-    ...values,
-    category: category,
-  };
-
-  return id ? await updateItem({ ...newItem, id }) : await addItem(newItem);
+  return id ? await updateItem({ ...values, id }) : await addItem(values);
 }

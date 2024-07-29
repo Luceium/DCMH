@@ -22,6 +22,13 @@ import { EditContext } from "@/lib/context";
 export const formSchema = z.object({
   imageURL: z.string().url(),
   name: z.string().min(1),
+  category: z
+    .string()
+    .min(1)
+    .refine((category) => category != "Prioritized", {
+      message:
+        'Please use a more descriptive category and star the item after to add it to "Prioritized"',
+    }),
   description: z.string().min(1),
   quantity: z.number().nonnegative(),
   targetQuantity: z.number().positive(),
@@ -50,6 +57,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
     defaultValues: {
       imageURL: partialItem.imageURL ?? "",
       name: partialItem.name ?? "",
+      category: partialItem.category,
       description: partialItem.description ?? "",
       quantity: partialItem.quantity ?? 50,
       targetQuantity: partialItem.targetQuantity ?? 100,
@@ -67,11 +75,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(async (values: FormSchema) => {
-              const item = await submitItemFromForm(
-                values,
-                partialItem.category,
-                partialItem?.id
-              );
+              const item = await submitItemFromForm(values, partialItem?.id);
 
               if (isUpdate) {
                 updateItem?.(item);
@@ -101,6 +105,20 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <FormControl>
+                    {/* TODO: DO_NOT_SUBMIT Use a combo box or input with autocomplete */}
                     <Input {...field} />
                   </FormControl>
                   <FormMessage />
