@@ -32,7 +32,9 @@ function generateTab(
               deleteItem={deleteItem}
             />
           ))}
-          {edit && <ItemCardForm partialItem={{ category: name }} />}
+          {edit && (
+            <ItemCardForm partialItem={{ category: name }} addItem={addItem} />
+          )}
         </div>
       </div>
     ),
@@ -46,39 +48,42 @@ export default function MainPageTabs({
 }) {
   const { edit } = useContext(EditContext);
   const [items, setItems] = useState(_items);
+
   const tabs = Object.entries(items).map(([category, i]) => {
+    function updateItemUI(item: Item) {
+      setItems(
+        produce(items, (draft) => {
+          draft[category][
+            draft[category].findIndex((draftItem) => draftItem.id === item.id)
+          ] = item;
+        })
+      );
+    }
+    function addItemUI(item: Item) {
+      setItems(
+        produce(items, (draft) => {
+          draft[category].push(item);
+        })
+      );
+    }
+    function deleteItemUI(item: Item) {
+      setItems(
+        produce(items, (draft) => {
+          draft[category].splice(
+            draft[category].findIndex((draftItem) => draftItem.id === item.id),
+            1
+          );
+        })
+      );
+    }
+
     return generateTab(
       category,
       i,
       edit,
-      (item: Item) => {
-        setItems(
-          produce(items, (draft) => {
-            draft[category][
-              draft[category].findIndex((draftItem) => draftItem.id === item.id)
-            ] = item;
-          })
-        );
-      },
-      (item: Item) => {
-        setItems(
-          produce(items, (draft) => {
-            draft[category].push(item);
-          })
-        );
-      },
-      (item: Item) => {
-        setItems(
-          produce(items, (draft) => {
-            draft[category].splice(
-              draft[category].findIndex(
-                (draftItem) => draftItem.id === item.id
-              ),
-              1
-            );
-          })
-        );
-      }
+      updateItemUI,
+      addItemUI,
+      deleteItemUI
     );
   });
 

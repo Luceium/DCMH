@@ -2,6 +2,7 @@
 import { formSchema } from "@/components/ui/itemCardForm";
 import prisma from "@/lib/prisma";
 import { Item } from "@prisma/client";
+import { produce } from "immer";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -38,7 +39,12 @@ export async function addItem(item: Omit<Omit<Item, "priority">, "id">) {
 export async function updateItem(item: Omit<Item, "priority">) {
   const updatedItem = await prisma.item.update({
     where: { id: item.id },
-    data: item,
+    data: produce(
+      item,
+      (item: Omit<Omit<Item, "priority">, "id"> & { id?: string }) => {
+        delete item.id;
+      }
+    ),
   });
   revalidatePath("/");
   return updatedItem;

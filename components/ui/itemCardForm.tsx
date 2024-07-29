@@ -3,7 +3,6 @@
 import React from "react";
 import { Progress } from "./progress";
 import { submitItemFromForm } from "@/actions/editItems";
-import { Item } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -17,6 +16,7 @@ import { Input } from "./input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
+import { Item } from "@prisma/client";
 
 export const formSchema = z.object({
   imageURL: z.string().url(),
@@ -26,10 +26,13 @@ export const formSchema = z.object({
   targetQuantity: z.number().positive(),
 });
 
+export type FormSchema = z.infer<typeof formSchema>;
+
 type PartialItem = {
   id?: string;
   name?: string;
   category: string;
+  priority?: boolean;
   description?: string;
   quantity?: number;
   targetQuantity?: number;
@@ -39,11 +42,15 @@ type PartialItem = {
 type ItemCardFormProps = {
   partialItem: PartialItem;
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
+  addItem?: (item: Item) => void;
+  updateItem?: (item: Item) => void;
 };
 
 const ItemCardForm: React.FC<ItemCardFormProps> = ({
   partialItem,
   setEditCardMode,
+  addItem,
+  updateItem,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
@@ -66,26 +73,20 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
       {!isUpdate && <p className="text-center">Add New Item</p>}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(
-            async (values: z.infer<typeof formSchema>) => {
-              await submitItemFromForm(
-                values,
-                partialItem.category,
-                partialItem?.id
-              );
+          onSubmit={form.handleSubmit(async (values: FormSchema) => {
+            const item = await submitItemFromForm(
+              values,
+              partialItem.category,
+              partialItem?.id
+            );
 
-              if (isUpdate) {
-                // visually update the item UI
-                partialItem.name = values.name;
-                partialItem.description = values.description;
-                partialItem.quantity = values.quantity;
-                partialItem.targetQuantity = values.targetQuantity;
-                partialItem.imageURL = values.imageURL;
-
-                setEditCardMode!(false);
-              }
+            if (isUpdate) {
+              updateItem?.(item);
+              setEditCardMode?.(false);
+            } else {
+              addItem?.(item);
             }
-          )}
+          })}
         >
           <FormField
             control={form.control}
