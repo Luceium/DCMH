@@ -79,10 +79,12 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
                   deleteItem={deleteItem}
                 />
               ))}
-              <ItemCardForm
-                partialItem={{ category: name }}
-                addItem={addItem}
-              />
+              {name != "Prioritized" && (
+                <ItemCardForm
+                  partialItem={{ category: name }}
+                  addItem={addItem}
+                />
+              )}
             </div>
           ) : (
             <p>No items in category</p>
