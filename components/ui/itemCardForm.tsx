@@ -29,19 +29,8 @@ export const formSchema = z.object({
 
 export type FormSchema = z.infer<typeof formSchema>;
 
-export type PartialItem = {
-  id?: string;
-  name?: string;
-  category: string;
-  priority?: boolean;
-  description?: string;
-  quantity?: number;
-  targetQuantity?: number;
-  imageURL?: string;
-};
-
 type ItemCardFormProps = {
-  partialItem: PartialItem;
+  partialItem: Partial<Item> & { category: string };
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
   addItem?: (item: Item) => void;
   updateItem?: (item: Item) => void;
