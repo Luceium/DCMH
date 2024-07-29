@@ -94,7 +94,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
     });
   }
 
-  const [tabs, setTabs] = useState<Tab[]>(generateAllTabs([]));
+  const [tabs, setTabs] = useState(generateAllTabs([]));
   useEffect(() => {
     setTabs((oldTabs) => generateAllTabs(oldTabs));
   }, [items]);
