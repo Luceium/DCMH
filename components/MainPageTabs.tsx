@@ -8,6 +8,7 @@ import { produce } from "immer";
 import { fetchItems } from "@/actions/fetchItems";
 import { EditContext } from "@/lib/context";
 import ItemCardForm from "./ui/itemCardForm";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Tab = {
   title: string;
@@ -17,7 +18,20 @@ type Tab = {
 
 export default function MainPageTabs({ items: _items }: { items: Item[] }) {
   const [items, setItems] = useState(_items);
-  const [activeTabName, setActiveTabName] = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [activeTabName, setActiveTabName] = useState(
+    searchParams.get("tab") ?? ""
+  );
+
+  useEffect(() => {
+    const activeTabName = searchParams.get("tab");
+    if (activeTabName) setActiveTabName(activeTabName);
+  }, []);
+
+  useEffect(() => {
+    router.push("/?tab=" + activeTabName);
+  }, [activeTabName]);
 
   function generateTab(name: string, categoryItems: Item[]): Tab {
     function updateItem(item: Item) {
