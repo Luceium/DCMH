@@ -99,9 +99,13 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
         }
       });
 
-      existingTabs.forEach((existingTab, existingIndex) => {
-        if (!categories.has(existingTab.value)) {
-          draft[existingIndex] = generateTab(existingTab.value, []);
+      existingTabs.forEach((existingTab) => {
+        if (
+          existingTab.value !== "Prioritized" &&
+          !categories.has(existingTab.value)
+        ) {
+          draft[draft.findIndex((tab) => tab.value === existingTab.value)] =
+            generateTab(existingTab.value, []);
         }
       });
     });
