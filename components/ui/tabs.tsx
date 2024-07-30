@@ -28,28 +28,6 @@ export const Tabs = ({
   tabClassName?: string;
   contentClassName?: string;
 }) => {
-  const [tabs, setTabs] = useState<Tab[]>(propTabs);
-
-  useEffect(() => {
-    setTabs((tabs) => {
-      return produce(propTabs, (draft) => {
-        const activeIndex = propTabs.findIndex(
-          (tab) => tab.value === tabs[0].value
-        );
-        draft.splice(activeIndex, 1);
-        draft.unshift(propTabs[activeIndex]);
-      });
-    });
-  }, [propTabs]);
-
-  const moveSelectedTabToTop = (idx: number) => {
-    const newTabs = [...propTabs];
-    const selectedTab = newTabs.splice(idx, 1);
-    newTabs.unshift(selectedTab[0]);
-    setTabs(newTabs);
-    setActiveTabName(newTabs[0].value);
-  };
-
   const [hovering, setHovering] = useState(false);
 
   return (
@@ -64,7 +42,7 @@ export const Tabs = ({
           <button
             key={tab.title}
             onClick={() => {
-              moveSelectedTabToTop(idx);
+              setActiveTabName(propTabs[idx].value);
             }}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
@@ -73,7 +51,7 @@ export const Tabs = ({
               transformStyle: "preserve-3d",
             }}
           >
-            {tabs[0].value === tab.value && (
+            {orderedTabs[0].value === tab.value && (
               <motion.div
                 layoutId="clickedbutton"
                 transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}

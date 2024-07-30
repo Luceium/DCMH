@@ -21,13 +21,14 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
 
   function generateTab(name: string, categoryItems: Item[]): Tab {
     function updateItem(item: Item) {
+      const itemIndex = items.findIndex((i) => i.id === item.id);
       setItems(
         produce(items, (draft) => {
-          draft[draft.findIndex((draftItem) => draftItem.id === item.id)] =
-            item;
+          draft[itemIndex] = item;
         })
       );
-      setActiveTabName(item.category);
+      if (items[itemIndex].category !== item.category)
+        setActiveTabName(item.category);
     }
     function addItem(item: Item) {
       setItems(
