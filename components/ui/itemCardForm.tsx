@@ -101,10 +101,6 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
               } else {
                 addItem?.(item);
               }
-
-              // if (partialItem.category != values.category) {
-              //   setCurrentTab(values.category);
-              // }
             })}
           >
             {validImageURL && (
@@ -113,6 +109,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
                 src={validImageURL}
                 width={275}
                 height={275}
+                alt="Image preview"
               />
             )}
             <FormField
