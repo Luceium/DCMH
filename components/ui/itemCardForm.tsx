@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Progress } from "./progress";
 import { submitItemFromForm } from "@/actions/editItems";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -18,16 +18,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
 import { Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
+import { isImgUrl } from "@/lib/utils";
+import { watch } from "fs";
+import Image from "next/image";
 
 export const formSchema = z.object({
-  imageURL: z.string().url(),
+  imageURL: z
+    .string()
+    .url()
+    .refine(isImgUrl, { message: "Please enter a valid image URL." }),
   name: z.string().min(1),
   category: z
     .string()
     .min(1)
     .refine((category) => category != "Prioritized", {
       message:
-        'Please use a more descriptive category and star the item after to add it to "Prioritized"',
+        'Please use a more descriptive category and star the item after to add it to "Prioritized".',
     }),
   description: z.string().min(1),
   quantity: z.number().nonnegative(),
@@ -66,7 +72,19 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
 
   const watchQuantity = form.watch("quantity");
   const watchTargetQuality = form.watch("targetQuantity");
+  const watchImageURL = form.watch("imageURL");
   const isUpdate: boolean = !!partialItem.id;
+  const [validImageURL, setValidImageURL] = useState("");
+
+  useEffect(() => {
+    isImgUrl(watchImageURL).then((valid) => {
+      if (valid) {
+        setValidImageURL(watchImageURL);
+      } else {
+        setValidImageURL("");
+      }
+    });
+  }, [watchImageURL]);
 
   return (
     edit && (
@@ -84,11 +102,19 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
                 addItem?.(item);
               }
 
-              if (partialItem.category != values.category) {
-                setCurrentTab(values.category);
-              }
+              // if (partialItem.category != values.category) {
+              //   setCurrentTab(values.category);
+              // }
             })}
           >
+            {validImageURL && (
+              <Image
+                className="w-full h-52 object-cover"
+                src={validImageURL}
+                width={275}
+                height={275}
+              />
+            )}
             <FormField
               control={form.control}
               name="imageURL"
