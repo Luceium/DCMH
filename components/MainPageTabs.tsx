@@ -17,6 +17,7 @@ type Tab = {
 
 export default function MainPageTabs({ items: _items }: { items: Item[] }) {
   const [items, setItems] = useState(_items);
+  const [activeTabName, setActiveTabName] = useState("");
 
   function generateTab(name: string, categoryItems: Item[]): Tab {
     function updateItem(item: Item) {
@@ -26,6 +27,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
             item;
         })
       );
+      setActiveTabName(item.category);
     }
     function addItem(item: Item) {
       setItems(
@@ -33,6 +35,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
           draft.push(item);
         })
       );
+      setActiveTabName(item.category);
     }
     function deleteItem(item: Item) {
       setItems(
@@ -126,7 +129,18 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
 
   return (
     <div className="h-[100vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
-      <Tabs contentClassName="h-[100vh]" tabs={tabs} />
+      <Tabs
+        contentClassName="h-[100vh]"
+        orderedTabs={produce(tabs, (draft) => {
+          const activeIndex = tabs.findIndex(
+            (tab) => tab.value === activeTabName
+          );
+          const activeTab = draft.splice(activeIndex, 1);
+          draft.unshift(activeTab[0]);
+        })}
+        tabs={tabs}
+        setActiveTabName={setActiveTabName}
+      />
     </div>
   );
 }

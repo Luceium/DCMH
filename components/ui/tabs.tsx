@@ -13,18 +13,21 @@ type Tab = {
 
 export const Tabs = ({
   tabs: propTabs,
+  orderedTabs,
+  setActiveTabName,
   containerClassName,
   activeTabClassName,
   tabClassName,
   contentClassName,
 }: {
   tabs: Tab[];
+  orderedTabs: Tab[];
+  setActiveTabName: (tabName: string) => void;
   containerClassName?: string;
   activeTabClassName?: string;
   tabClassName?: string;
   contentClassName?: string;
 }) => {
-  const [active, setActive] = useState<Tab>(propTabs[0]);
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export const Tabs = ({
     const selectedTab = newTabs.splice(idx, 1);
     newTabs.unshift(selectedTab[0]);
     setTabs(newTabs);
-    setActive(newTabs[0]);
+    setActiveTabName(newTabs[0].value);
   };
 
   const [hovering, setHovering] = useState(false);
@@ -70,7 +73,7 @@ export const Tabs = ({
               transformStyle: "preserve-3d",
             }}
           >
-            {active.value === tab.value && (
+            {tabs[0].value === tab.value && (
               <motion.div
                 layoutId="clickedbutton"
                 transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
@@ -88,9 +91,8 @@ export const Tabs = ({
         ))}
       </div>
       <FadeInDiv
-        tabs={tabs}
-        active={active}
-        key={active.value}
+        tabs={orderedTabs}
+        key={orderedTabs[0].value}
         hovering={hovering}
         className={cn("mt-10", contentClassName)}
       />
@@ -106,12 +108,8 @@ export const FadeInDiv = ({
   className?: string;
   key?: string;
   tabs: Tab[];
-  active: Tab;
   hovering?: boolean;
 }) => {
-  const isActive = (tab: Tab) => {
-    return tab.value === tabs[0].value;
-  };
   return (
     <div className="relative w-full h-full">
       {tabs.map((tab, idx) => (
@@ -125,7 +123,7 @@ export const FadeInDiv = ({
             opacity: idx < 3 ? 1 - idx * 0.1 : 0,
           }}
           animate={{
-            y: isActive(tab) ? [0, 40, 0] : 0,
+            y: idx === 0 ? [0, 40, 0] : 0,
           }}
           className={cn("w-full h-full absolute top-0 left-0", className)}
         >
