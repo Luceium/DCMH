@@ -136,8 +136,10 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
           const activeIndex = tabs.findIndex(
             (tab) => tab.value === activeTabName
           );
-          const activeTab = draft.splice(activeIndex, 1);
-          draft.unshift(activeTab[0]);
+          if (activeIndex !== -1) {
+            const activeTab = draft.splice(activeIndex, 1);
+            draft.unshift(activeTab[0]);
+          }
         })}
         tabs={tabs}
         setActiveTabName={setActiveTabName}
