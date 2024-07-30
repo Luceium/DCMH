@@ -27,7 +27,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
   useEffect(() => {
     const activeTabName = searchParams.get("tab");
     if (activeTabName) setActiveTabName(activeTabName);
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     router.push("/?tab=" + activeTabName);
