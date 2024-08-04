@@ -2,7 +2,7 @@ import addToMailingList from "@/actions/addToMailingList";
 
 const Footer = () => {
   return (
-    <footer className="footer p-10 bg-base-200 text-base-content">
+    <footer className="footer p-10 bg-[#fff6ba] dark:bg-base-200 text-slate-950 dark:text-base-content">
       <nav>
         <h6 className="footer-title">Davis Community Meals & Housing</h6>
         <a
@@ -66,18 +66,19 @@ const Footer = () => {
         <h6 className="footer-title">Mailing List</h6>
         <fieldset className="form-control w-80">
           <label className="label">
-            <span className="label-text">
-              Enter your email address to join our mailing list!
-            </span>
+            <span>Enter your email address to join our mailing list!</span>
           </label>
           <div className="join">
             <input
               type="text"
               name="email"
               placeholder="username@site.com"
-              className="input input-bordered join-item"
+              className="input border-1 border-slate-400 bg-[#fcfbe3] text-slate-950 dark:bg-base-200 join-item"
             />
-            <button type="submit" className="btn btn-primary join-item">
+            <button
+              type="submit"
+              className="btn border-slate-400 bg-yellow-200 dark:bg-indigo-600 { NavLink } from 'react-router-dom' text-slate-950 dark:btn-primary join-item"
+            >
               Subscribe
             </button>
           </div>

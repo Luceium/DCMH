@@ -66,7 +66,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
         title: name,
         value: name,
         content: (
-          <div className="w-full flex flex-col relative h-full rounded-2xl p-6 text-xl md:text-4xl bg-gradient-to-br from-gray-700 to-gray-900 gap-4 overflow-y-scroll">
+          <div className="w-full flex flex-col relative h-full rounded-2xl p-6 text-xl md:text-4xl bg-gradient-to-br from-[#fcfbe3] dark:from-gray-700 to-[#fff2cc] dark:to-gray-900 gap-4 overflow-y-scroll">
             <p className="font-bold">{name} Products</p>
             {categoryItems.length > 0 ? (
               <div className="flex justify-center flex-wrap gap-5">
