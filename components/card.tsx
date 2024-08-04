@@ -23,7 +23,7 @@ const Card = ({ item, children }: { item: Item; children: ReactNode }) => {
         <div>
           <Progress value={(quantity / targetQuantity) * 100} />
           <p>
-            {quantity}/{targetQuantity}
+            Donation Goal: {quantity}/{targetQuantity}
           </p>
         </div>
         {children}
