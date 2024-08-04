@@ -68,11 +68,29 @@ export const Tabs = ({
           </button>
         ))}
       </div>
+      <h1 className="my-5">
+        <b>
+          These are the items we need to provide basic necessities to the
+          unhoused members of our community.
+        </b>
+        &nbsp; We offer a clean place to sit and rest, enjoy a cup of coffee and
+        a bowl of cereal, a shower and space to clean up, and laundry facilities
+        to wash clothes. Of course, we also offer intangible resources like
+        guidance navigating county services.
+        <b>
+          &nbsp; By providing these items you can help those less fortunate to
+          start their day with hope. Thank you!
+        </b>
+        <br />
+        <br />
+        Items can be brought to 1111 H Street, (also known as Paul's Place)
+        between 8AM and 1:30PM Monday - Friday.
+      </h1>
       <FadeInDiv
         tabs={orderedTabs}
         key={orderedTabs[0].value}
         hovering={hovering}
-        className={cn("mt-10", contentClassName)}
+        className={contentClassName}
       />
     </>
   );
