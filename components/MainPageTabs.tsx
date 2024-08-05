@@ -78,7 +78,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
                     deleteItem={deleteItem}
                   />
                 ))}
-                {name != "Prioritized" && (
+                {name != "Priority Items" && (
                   <ItemCardForm
                     partialItem={{ category: name }}
                     addItem={addItem}
@@ -98,11 +98,11 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
     return (existingTabs: Tab[]) => {
       return produce(existingTabs, (draft) => {
         const prioritizedItems = items.filter((item) => item.priority);
-        if (draft[0]?.value !== "Prioritized") {
+        if (draft[0]?.value !== "Priority Items") {
           if (prioritizedItems.length > 0)
-            draft.splice(0, 0, generateTab("Prioritized", prioritizedItems));
+            draft.splice(0, 0, generateTab("Priority Items", prioritizedItems));
         } else {
-          draft[0] = generateTab("Prioritized", prioritizedItems);
+          draft[0] = generateTab("Priority Items", prioritizedItems);
         }
 
         const categories = new Set(items.map((item) => item.category));
@@ -122,7 +122,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
 
         existingTabs.forEach((existingTab) => {
           if (
-            existingTab.value !== "Prioritized" &&
+            existingTab.value !== "Priority Items" &&
             !categories.has(existingTab.value)
           ) {
             draft[draft.findIndex((tab) => tab.value === existingTab.value)] =

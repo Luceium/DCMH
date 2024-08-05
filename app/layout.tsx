@@ -32,7 +32,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <EditContextProvider>
-              <div className="min-h-[75vh]">
+              <div className="min-h-[50vh]">
                 <Nav />
                 <div className="pt-4">{children}</div>
               </div>
