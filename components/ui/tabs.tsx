@@ -83,7 +83,7 @@ export const Tabs = ({
         </b>
         <br />
         <br />
-        Items can be brought to 1111 H Street, (also known as Paul's Place)
+        Items can be brought to 1111 H Street, (also known as Paul&apos;s Place)
         between 8AM and 1:30PM Monday - Friday.
       </h1>
       <FadeInDiv
