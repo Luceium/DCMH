@@ -147,7 +147,7 @@ export default function MainPageTabs({ items: _items }: { items: Item[] }) {
   }, []);
 
   return (
-    <div className="h-[100vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
+    <div className="h-[135vh] md:h-[120vh] lg:h-[110vh] [perspective:1000px] relative b flex flex-col max-w-[90%] mx-auto w-full items-start justify-start mb-40 overflow-y-visible">
       <Tabs
         contentClassName="h-[100vh]"
         orderedTabs={produce(tabs, (draft) => {
