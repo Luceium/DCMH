@@ -7,7 +7,7 @@ const Card = ({ item, children }: { item: Item; children: ReactNode }) => {
   const { name, description, quantity, targetQuantity, imageURL } = item;
 
   return (
-    <div className="card w-80 bg-gray-500 mb-4">
+    <div className="card w-80 bg-[#e3e8fc] dark:bg-gray-500 mb-4">
       <figure>
         <Image
           className="w-full h-52 object-cover"
@@ -23,7 +23,7 @@ const Card = ({ item, children }: { item: Item; children: ReactNode }) => {
         <div>
           <Progress value={(quantity / targetQuantity) * 100} />
           <p>
-            {quantity}/{targetQuantity}
+            Donation Goal: {quantity}/{targetQuantity}
           </p>
         </div>
         {children}

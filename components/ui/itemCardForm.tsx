@@ -88,7 +88,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
 
   return (
     edit && (
-      <div className="card w-80 bg-gray-500 mb-4 p-4">
+      <div className="card w-80 bg-[#e3e8fc] dark:bg-gray-500 mb-4 p-4">
         {!isUpdate && <p className="text-center">Add New Item</p>}
         <Form {...form}>
           <form

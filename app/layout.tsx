@@ -7,6 +7,7 @@ import Nav from "@/components/nav";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { EditContext, EditContextProvider } from "@/lib/context";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <AuthProvider authUrl={process.env.NEXT_PUBLIC_AUTH_URL!}>
-        <body className={inter.className}>
+        <body className={cn(inter.className, "bg-[#e0f2ff] dark:bg-black")}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -31,7 +32,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <EditContextProvider>
-              <div className="min-h-[75vh]">
+              <div className="min-h-[50vh]">
                 <Nav />
                 <div className="pt-4">{children}</div>
               </div>
