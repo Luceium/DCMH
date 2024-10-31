@@ -7,13 +7,14 @@
 //   return <MainPageTabs items={items} />;
 // }
 
-'use client'
+"use client";
 
-import { useState } from "react"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import Nav from "@/components/nav";
 
 // Categories and their items
 const categories = [
@@ -22,7 +23,7 @@ const categories = [
   { id: "medicine", label: "Medicine" },
   { id: "food", label: "Food & Food Supplies" },
   { id: "hygiene", label: "Hygiene" },
-]
+];
 
 const inventoryItems = [
   {
@@ -52,39 +53,37 @@ const inventoryItems = [
     current: 2,
     goal: 50,
   },
-]
+];
 
 export default function Component() {
-  const [activeCategory, setActiveCategory] = useState("priority")
+  const [activeCategory, setActiveCategory] = useState("priority");
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-[#2B5592]">Inventory Management</h1>
-            <Button variant="outline">Login</Button>
-          </div>
-        </div>
-      </header>
-
+    <div>
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Description */}
         <div className="mb-8 max-w-4xl">
           <p className="text-gray-700 leading-relaxed">
-            These are the items we need to provide basic necessities to the unhoused members of our community. 
-            We offer a clean place to sit and rest, enjoy a cup of coffee and a bowl of cereal, a shower and space to clean up, and
-            laundry facilities to wash clothes. By providing these items you can help those less fortunate to start their day with hope. Thank you!
+            These are the items we need to provide basic necessities to the
+            unhoused members of our community. We offer a clean place to sit and
+            rest, enjoy a cup of coffee and a bowl of cereal, a shower and space
+            to clean up, and laundry facilities to wash clothes. By providing
+            these items you can help those less fortunate to start their day
+            with hope. Thank you!
           </p>
           <p className="mt-4 text-sm text-gray-600">
-            Items can be brought to 1111 H Street, (also known as Paul's Place) between 8AM and 1:30PM Monday - Friday.
+            Items can be brought to 1111 H Street, (also known as Paul's Place)
+            between 8AM and 1:30PM Monday - Friday.
           </p>
         </div>
 
         {/* Categories */}
-        <Tabs defaultValue="priority" className="mb-8" onValueChange={setActiveCategory}>
+        <Tabs
+          defaultValue="priority"
+          className="mb-8"
+          onValueChange={setActiveCategory}
+        >
           <TabsList className="w-full justify-start overflow-x-auto">
             {categories.map((category) => (
               <TabsTrigger
@@ -128,5 +127,5 @@ export default function Component() {
         </div>
       </main>
     </div>
-  )
+  );
 }

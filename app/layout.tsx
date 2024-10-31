@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <AuthProvider authUrl={process.env.NEXT_PUBLIC_AUTH_URL!}>
-        <body className={cn(inter.className, "bg-[#e0f2ff] dark:bg-black")}>
+        <body className={cn(inter.className, "bg- dark:bg-black")}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -32,12 +32,12 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <EditContextProvider>
-              <div className="min-h-[50vh]">
+              <div className="min-h-screen flex flex-col">
                 <Nav />
-                <div className="pt-4">{children}</div>
+                <div className="flex-1 pt-4">{children}</div>
+                <Footer />
               </div>
             </EditContextProvider>
-            <Footer />
             <Toaster />
           </ThemeProvider>
         </body>
