@@ -73,12 +73,9 @@ const Footer = () => {
               type="text"
               name="email"
               placeholder="username@site.com"
-              className="input border-1 border-slate-400 bg-[#fcfbe3] text-slate-950 dark:bg-base-200 join-item"
+              className="input border-1 bg-secondaryDark text-neutral-content dark:bg-secondaryDark join-item"
             />
-            <button
-              type="submit"
-              className="btn border-slate-400 bg-yellow-200 dark:bg-indigo-600 { NavLink } from 'react-router-dom' text-slate-950 dark:btn-primary join-item"
-            >
+            <button type="submit" className="btn join-item bg-accent">
               Subscribe
             </button>
           </div>

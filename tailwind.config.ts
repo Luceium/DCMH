@@ -15,6 +15,7 @@ const config = {
         dcmh: {
           primary: "#f8d55c",
           secondary: "#2c5895",
+          secondaryDark: "#1a3a69",
           accent: "#f36446",
           neutral: "#ffffff",
           "base-100": "#f6efda",
@@ -48,10 +49,6 @@ const config = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
