@@ -9,6 +9,31 @@ const config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  daisyui: {
+    themes: [
+      {
+        dcmh: {
+          primary: "#f8d55c",
+
+          secondary: "#2c5895",
+
+          accent: "#f36446",
+
+          neutral: "#ffffff",
+
+          "base-100": "#f6efda",
+
+          info: "#0082ce",
+
+          success: "#a5f3fc",
+
+          warning: "#fef08a",
+
+          error: "#ff6f75",
+        },
+      },
+    ],
+  },
   theme: {
     container: {
       center: true,
