@@ -14,21 +14,13 @@ const config = {
       {
         dcmh: {
           primary: "#f8d55c",
-
           secondary: "#2c5895",
-
           accent: "#f36446",
-
           neutral: "#ffffff",
-
           "base-100": "#f6efda",
-
           info: "#0082ce",
-
           success: "#a5f3fc",
-
           warning: "#fef08a",
-
           error: "#ff6f75",
         },
       },
@@ -49,14 +41,6 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

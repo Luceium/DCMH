@@ -2,7 +2,7 @@ import addToMailingList from "@/actions/addToMailingList";
 
 const Footer = () => {
   return (
-    <footer className="footer p-10 bg-[#fff6ba] dark:bg-base-200 text-slate-950 dark:text-base-content">
+    <footer className="footer p-10 bg-secondary dark:bg-secondary text-secondary-content dark:text-secondary-content">
       <nav>
         <h6 className="footer-title">Davis Community Meals & Housing</h6>
         <a

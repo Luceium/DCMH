@@ -99,7 +99,9 @@ export default function NavAvatar() {
     </DropdownMenu>
   ) : (
     <Button asChild>
-      <Link href={getLoginPageUrl()}>Login</Link>
+      <Link href={getLoginPageUrl()} className="text-primary-content">
+        Login
+      </Link>
     </Button>
   );
 }

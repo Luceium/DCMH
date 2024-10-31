@@ -6,16 +6,28 @@ import { EditContext } from "@/lib/context";
 import { Toggle } from "./ui/toggle";
 import useIsAdmin from "@/lib/useIsAdmin";
 import { Button } from "./ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 const Nav = () => {
   const { edit, setEdit } = useContext(EditContext);
   const { isAdmin } = useIsAdmin();
 
   return (
-    <header className="bg-white border-b">
+    <header className="border-b">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#2B5592]">Pantry</h1>
+          <Link href="https://daviscommunitymeals.org">
+            <Image
+              src="/images/dcmh.png"
+              alt="DCMH Logo"
+              width={100}
+              height={100}
+            />
+          </Link>
+          <h1 className="text-2xl font-bold text-secondary dark:text-blue-300">
+            Pantry
+          </h1>
           {isAdmin && (
             <>
               <Toggle pressed={edit} onPressedChange={() => setEdit(!edit)}>
