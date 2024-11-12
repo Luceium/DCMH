@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { EditContext, EditContextProvider } from "@/lib/context";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +41,7 @@ export default function RootLayout({
             <Footer />
             <Toaster />
           </ThemeProvider>
+          <Analytics />
         </body>
       </AuthProvider>
     </html>
