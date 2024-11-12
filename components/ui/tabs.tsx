@@ -73,7 +73,7 @@ export const Tabs = ({
           Help us provide basic necessities to the unhoused members of our
           community.
         </b>
-        &nbsp We offer a clean place to sit and rest, enjoy a cup of coffee, a
+        &nbsp;We offer a clean place to sit and rest, enjoy a cup of coffee, a
         bowl of cereal and hot food, take a shower with space to clean up, and
         laundry facilities to wash clothes. Of course, we also offer intangible
         resources like guidance navigating county services and medical needs. By
@@ -83,12 +83,12 @@ export const Tabs = ({
         <br />
         <b>
           Items can be brought to 1111 H Street (Paul&apos;s Place) between 8AM
-          and 1:30PM Monday - Friday.
+          and 2PM Monday - Friday.
         </b>
-        &nbsp Volunteers are available to help unload your car. Please do not
-        ship items. Shipped items may not arrive during our open hours and are
-        unlikely to get to us. We are happy to give you a donation receipt.
-        Questions? Call 530-756-4008
+        &nbsp;Volunteers are available to help unload your car. If you choose to
+        ship items they must arrive during our Resource Center hours. Items
+        delivered after we are closed are unlikely to get to us. We are happy to
+        give you a donation receipt. Questions? Call 530-756-4008
       </h1>
       <FadeInDiv
         tabs={orderedTabs}
