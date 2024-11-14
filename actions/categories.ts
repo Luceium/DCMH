@@ -5,10 +5,18 @@ export async function getCategories() {
   return await prisma.category.findMany();
 }
 
-export async function getCategory(id: string) {
+export async function getCategoryName(id: string) {
   return await prisma.category.findUnique({
     where: {
       id,
+    },
+  });
+}
+
+export async function getCategory(name: string) {
+  return await prisma.category.findFirst({
+    where: {
+      name,
     },
   });
 }

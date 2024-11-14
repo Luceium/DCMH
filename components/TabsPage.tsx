@@ -15,6 +15,7 @@ import { Category, Item } from "@prisma/client";
 import ItemCardForm from "./ui/itemCardForm";
 import EditableCard from "./ItemCard";
 import CategoryTab from "./category-tab";
+import { produce } from "immer";
 
 const PRIORITY_ITEMS = "PRIORITY_ITEMS";
 
@@ -82,15 +83,23 @@ export default function TabsPage() {
         </TabsList>
       </Tabs>
 
-      <TabsPageContent activeCategory={activeCategory} />
+      <TabsPageContent
+        activeCategory={activeCategory}
+        categories={categories}
+        setActiveCategory={setActiveCategory}
+      />
     </>
   );
 }
 
 export const TabsPageContent = ({
   activeCategory,
+  categories,
+  setActiveCategory,
 }: {
   activeCategory: string;
+  categories: Category[];
+  setActiveCategory: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { edit } = useContext(EditContext);
   const [invalidateSignal, setInvalidateSignal] = useState(false);
@@ -105,18 +114,90 @@ export const TabsPageContent = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {/* {inventoryItems.length == 0 && <h1>No Items</h1>}
+      {inventoryItems.length == 0 && <h1>No Items</h1>}
       {inventoryItems.map((item: Item) => (
         <EditableCard
           key={item.id}
-          updateItem={updateItem}
-          deleteItem={deleteItem}
+          updateItem={() =>
+            updateItem(
+              item,
+              inventoryItems,
+              setInventoryItems,
+              categories,
+              setActiveCategory
+            )
+          }
+          deleteItem={() => deleteItem(item, inventoryItems, setInventoryItems)}
           item={item}
         />
       ))}
       {activeCategory !== PRIORITY_ITEMS && edit && (
-        <ItemCardForm partialItem={{}} addItem={} />
-      )} */}
+        <ItemCardForm
+          partialItem={{}}
+          addItem={(newItem) =>
+            addItem(
+              newItem,
+              inventoryItems,
+              setInventoryItems,
+              categories,
+              setActiveCategory
+            )
+          }
+        />
+      )}
     </div>
   );
 };
+
+function updateItem(
+  item: Item,
+  items: Item[],
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  categories: Category[],
+  setActiveCategory: React.Dispatch<React.SetStateAction<string>>
+) {
+  const itemIndex = items.findIndex((i) => i.id === item.id);
+  setItems(
+    produce(items, (draft) => {
+      draft[itemIndex] = item;
+    })
+  );
+  if (items[itemIndex].categoryId !== item.categoryId) {
+    const category = categoryIdToName(item.categoryId, categories);
+    setActiveCategory(category);
+  }
+}
+function addItem(
+  item: Item,
+  items: Item[],
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  categories: Category[],
+  setActiveCategory: React.Dispatch<React.SetStateAction<string>>
+) {
+  setItems(
+    produce(items, (draft) => {
+      draft.push(item);
+    })
+  );
+  const category = categoryIdToName(item.categoryId, categories);
+  setActiveCategory(category);
+}
+function deleteItem(
+  item: Item,
+  items: Item[],
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>
+) {
+  setItems(
+    produce(items, (draft) => {
+      draft.splice(
+        draft.findIndex((draftItem) => draftItem.id === item.id),
+        1
+      );
+    })
+  );
+}
+
+function categoryIdToName(categoryId: string, categories: Category[]) {
+  const category = categories.find((category) => category.id === categoryId);
+  return category?.name ?? "";
+}
