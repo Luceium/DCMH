@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { PHProvider } from "@/lib/analytics";
 import dynamic from "next/dynamic";
 
-const PostHogPageView = dynamic(() => import("@/lib/PostHogPageView"), {
+const PostHogPageView = dynamic(() => import("../lib/PostHogPageView"), {
   ssr: false,
 });
 
