@@ -21,25 +21,23 @@ model User {
   photoURL String?
 }
 
+model Category {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+
+  items Item[]
+}
+
 model Item {
-  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  category       String
-  priority       Boolean     @default(false)
+  category       Category @relation(fields: [categoryId], references: [id])
+  categoryId     String   @db.ObjectId
+  priority       Boolean  @default(false)
   description    String
   quantity       Int
   targetQuantity Int
   imageURL       String
-  inventory      Inventory[]
-}
-
-model Inventory {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  itemId   String   @db.ObjectId
-  item     Item     @relation(fields: [itemId], references: [id])
-  quantity Int
-  date     DateTime
-  trend    Trend    @default(CONSTANT)
 }
 
 enum Trend {
