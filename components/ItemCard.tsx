@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import Card from "./card";
+import ItemCard from "./card";
 import { Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
 import ItemCardForm from "./ui/itemCardForm";
 import CardEditBar from "./CardEditBar";
 
-const ItemCard = ({
+const EditableCard = ({
   item,
   updateItem,
   deleteItem: deleteItemFromUI,
@@ -27,7 +27,7 @@ const ItemCard = ({
       setEditCardMode={setEditCardMode}
     />
   ) : (
-    <Card item={item}>
+    <ItemCard item={item}>
       {edit && (
         <CardEditBar
           item={item}
@@ -36,8 +36,8 @@ const ItemCard = ({
           updateItemFromUI={updateItem}
         />
       )}
-    </Card>
+    </ItemCard>
   );
 };
 
-export default ItemCard;
+export default EditableCard;

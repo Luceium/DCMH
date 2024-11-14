@@ -1,8 +1,6 @@
-import ItemTabs from "@/components/ItemTabs";
+import TabsPage from "@/components/TabsPage";
 
-
-export default function Component() {
-  // const items = await fetchItems();
+export default function Page() {
 
   return (
     <div>
@@ -35,7 +33,7 @@ export default function Component() {
           </p>
         </div>
 
-       <ItemTabs />
+        <TabsPage />
       </main>
     </div>
   );

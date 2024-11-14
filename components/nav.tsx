@@ -28,8 +28,8 @@ const Nav = () => {
           <h1 className="text-2xl font-bold text-secondary dark:text-blue-300">
             Pantry
           </h1>
-          {isAdmin && (
-            <>
+          <div className="flex gap-4">
+            {isAdmin && (
               <Toggle pressed={edit} onPressedChange={() => setEdit(!edit)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -46,9 +46,9 @@ const Nav = () => {
                   />
                 </svg>
               </Toggle>
-            </>
-          )}
-          <NavAvatar />
+            )}
+            <NavAvatar />
+          </div>
         </div>
       </div>
     </header>

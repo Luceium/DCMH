@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { use, useContext, useEffect, useRef, useState } from "react";
 import { Progress } from "./progress";
 import { submitItemFromForm } from "@/actions/editItems";
 import { set, useForm } from "react-hook-form";
@@ -16,11 +16,12 @@ import { Input } from "./input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
-import { Item } from "@prisma/client";
+import { Category, Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
 import { isImgUrl } from "@/lib/utils";
 import { watch } from "fs";
 import Image from "next/image";
+import { getCategory } from "@/actions/categories";
 
 export const formSchema = z.object({
   imageURL: z
@@ -43,7 +44,7 @@ export const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 type ItemCardFormProps = {
-  partialItem: Partial<Item> & { category: string };
+  partialItem: Partial<Item>;
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
   addItem?: (item: Item) => void;
   updateItem?: (item: Item) => void;
@@ -57,13 +58,22 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
 }) => {
   const { edit } = useContext(EditContext);
 
+  const [category, setCategory] = useState("");
+  useEffect(() => {
+    if (partialItem.categoryId) {
+      getCategory(partialItem.categoryId).then((cat) => {
+        if (cat) setCategory(cat.name);
+      });
+    }
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
     defaultValues: {
       imageURL: partialItem.imageURL ?? "",
       name: partialItem.name ?? "",
-      category: partialItem.category,
+      category: category,
       description: partialItem.description ?? "",
       quantity: partialItem.quantity ?? 50,
       targetQuantity: partialItem.targetQuantity ?? 100,

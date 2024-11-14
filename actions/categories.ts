@@ -1,7 +1,16 @@
+"use server";
 import prisma from "@/lib/prisma";
 
-export async function getEnabledCategories() {
+export async function getCategories() {
   return await prisma.category.findMany();
+}
+
+export async function getCategory(id: string) {
+  return await prisma.category.findUnique({
+    where: {
+      id,
+    },
+  });
 }
 
 export async function addCategory(name: string) {
@@ -12,18 +21,18 @@ export async function addCategory(name: string) {
   });
 }
 
-export async function deleteCategory(name: string) {
+export async function deleteCategory(id: string) {
   return await prisma.category.delete({
     where: {
-      name,
+      id,
     },
   });
 }
 
-export async function renameCategory(oldName: string, newName: string) {
+export async function renameCategory(id: string, newName: string) {
   return await prisma.category.update({
     where: {
-      name: oldName,
+      id,
     },
     data: {
       name: newName,

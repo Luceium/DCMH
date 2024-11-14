@@ -11,6 +11,18 @@ export async function fetchItem(itemId: string) {
   return item;
 }
 
-export async function fetchItems() {
-  return await prisma.item.findMany({});
+export async function fetchItems(category: string) {
+  return await prisma.item.findMany({
+    where: {
+      categoryId: category,
+    },
+  });
+}
+
+export async function fetchPriorityItems() {
+  return await prisma.item.findMany({
+    where: {
+      priority: true,
+    },
+  });
 }

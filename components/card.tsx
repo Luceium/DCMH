@@ -2,34 +2,33 @@ import React, { ReactNode } from "react";
 import { Progress } from "./ui/progress";
 import Image from "next/image";
 import { Item } from "@prisma/client";
+import { Card, CardContent } from "./ui/card";
 
-const Card = ({ item, children }: { item: Item; children: ReactNode }) => {
-  const { name, description, quantity, targetQuantity, imageURL } = item;
-
+const ItemCard = ({ item, children }: { item: Item; children: ReactNode }) => {
   return (
-    <div className="card w-80 bg-[#e3e8fc] dark:bg-gray-500 mb-4">
-      <figure>
+    <Card key={item.id} className="overflow-hidden">
+      <div className="aspect-square relative">
         <Image
-          className="w-full h-52 object-cover"
-          src={imageURL}
-          alt={name}
-          width={275}
-          height={275}
+          src={item.imageURL}
+          alt={item.name}
+          className="object-cover w-full h-full"
+          width={400}
+          height={400}
         />
-      </figure>
-      <div className="card-body text-sm">
-        <p className="card-title">{name}</p>
-        <p>{description}</p>
-        <div>
-          <Progress value={(quantity / targetQuantity) * 100} />
-          <p>
-            Donation Goal: {quantity}/{targetQuantity}
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-semibold text-lg mb-2">{item.name}</h3>
+        <p className="text-sm text-gray-600 mb-4">{item.description}</p>
+        <div className="space-y-2">
+          <Progress value={(item.quantity / item.targetQuantity) * 100} />
+          <p className="text-sm text-gray-600">
+            Donation Goal: {item.quantity}/{item.targetQuantity}
           </p>
         </div>
-        {children}
-      </div>
-    </div>
+      </CardContent>
+      {children}
+    </Card>
   );
 };
 
-export default Card;
+export default ItemCard;
