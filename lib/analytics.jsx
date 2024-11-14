@@ -1,13 +1,14 @@
-"use client";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
+'use client'
+import { useEffect } from 'react'
+import posthog from 'posthog-js'
+import { PostHogProvider } from 'posthog-js/react'
 
-if (typeof window !== "undefined") {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-    person_profiles: "always",
-  });
-}
-export function AnalyticsProvider({ children }) {
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+export function PHProvider({ children }) {
+  useEffect(() => {
+    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
+  }, [])
+
+  return <PostHogProvider client={posthog}>{children}</PostHogProvider>
 }
