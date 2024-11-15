@@ -6,7 +6,7 @@ import { Card, CardContent } from "./ui/card";
 
 const ItemCard = ({ item, children }: { item: Item; children: ReactNode }) => {
   return (
-    <Card key={item.id} className="overflow-hidden">
+    <Card key={item.id} className="overflow-hidden relative">
       <div className="aspect-square relative">
         <Image
           src={item.imageURL}
@@ -15,6 +15,7 @@ const ItemCard = ({ item, children }: { item: Item; children: ReactNode }) => {
           width={400}
           height={400}
         />
+        {children}
       </div>
       <CardContent className="p-4">
         <h3 className="font-semibold text-lg mb-2">{item.name}</h3>
@@ -26,7 +27,6 @@ const ItemCard = ({ item, children }: { item: Item; children: ReactNode }) => {
           </p>
         </div>
       </CardContent>
-      {children}
     </Card>
   );
 };

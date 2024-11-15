@@ -105,6 +105,7 @@ export const TabsPageContent = ({
   const [invalidateSignal, setInvalidateSignal] = useState(false);
   const [inventoryItems, setInventoryItems] = useState<Item[]>([]);
   useEffect(() => {
+    console.log(activeCategory);
     if (activeCategory == PRIORITY_ITEMS) {
       fetchPriorityItems().then((items) => setInventoryItems(items));
     } else {

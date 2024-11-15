@@ -29,23 +29,41 @@ export async function toggleItemPriority(itemId: string) {
   return prioritizedItem;
 }
 
-export async function addItem(item: Omit<Omit<Item, "priority">, "id">) {
+export async function addItem(
+  item: Omit<Item, "priority" | "categoryId" | "id"> & { category: string }
+) {
   const newItem = await prisma.item.create({
-    data: item,
+    data: {
+      ...item,
+      category: {
+        connect: {
+          name: item.category,
+        },
+      },
+    },
   });
   revalidatePath("/");
   return newItem;
 }
 
-export async function updateItem(item: Omit<Item, "priority">) {
+export async function updateItem(
+  item: Omit<Item, "priority" | "categoryId"> & { category: string }
+) {
   const updatedItem = await prisma.item.update({
     where: { id: item.id },
-    data: produce(
-      item,
-      (item: Omit<Omit<Item, "priority">, "id"> & { id?: string }) => {
-        delete item.id;
-      }
-    ),
+    data: {
+      ...produce(
+        item,
+        (item: Omit<Item, "priority" | "id"> & { id?: string }) => {
+          delete item.id;
+        }
+      ),
+      category: {
+        connect: {
+          name: item.category,
+        },
+      },
+    },
   });
   revalidatePath("/");
   return updatedItem;
@@ -61,18 +79,5 @@ export async function submitItemFromForm(
   values: z.infer<typeof formSchema>,
   id?: string
 ) {
-  const category = await getCategory(values.category);
-  const categoryId = category?.id ?? "";
-  if (!categoryId) return;
-
-  const updatedValues: Omit<Item, "id" | "priority"> & { category?: string } = {
-    ...values,
-    categoryId,
-  };
-  delete updatedValues.category;
-  const validatedValues: Omit<Item, "id" | "priority"> = updatedValues;
-
-  return id
-    ? await updateItem({ ...validatedValues, id })
-    : await addItem(validatedValues);
+  return id ? await updateItem({ ...values, id }) : await addItem(values);
 }
