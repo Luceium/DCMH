@@ -60,7 +60,7 @@ const CategoryTab = ({
         <TabsTrigger
           key={category.name}
           value={category.id}
-          className="px-4 py-2 text-sm"
+          className="px-4 py-2 text-sm border-gray-400 border"
           onDoubleClick={() => {
             if (edit) {
               setTabEditMode(true);
