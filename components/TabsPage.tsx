@@ -1,5 +1,5 @@
 "use client";
-import { act, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditContext } from "@/lib/context";
 import { X } from "lucide-react";
@@ -23,19 +23,13 @@ const PRIORITY_ITEMS = "PRIORITY_ITEMS";
 
 export default function TabsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [activeCategory, setActiveCategory] = useState(PRIORITY_ITEMS);
   const { edit } = useContext(EditContext);
   const [addingCategory, setAddingCategory] = useState(false);
   const [invalidateSignal, setInvalidateSignal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab && tab !== activeCategory) {
-      setActiveCategory(tab);
-    }
-  }, []);
+  const initialTab = searchParams.get('tab') || PRIORITY_ITEMS;
+  const [activeCategory, setActiveCategory] = useState(initialTab);
 
   useEffect(() => {
     const currentTab = searchParams.get('tab');

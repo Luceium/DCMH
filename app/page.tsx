@@ -1,11 +1,11 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import Description from "@/components/description";
 import TabsPage from "@/components/TabsPage";
 import EditableDescription from "@/components/description";
 
 export default function Page() {
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       {/* Main Content */}
       <main className="container mx-auto p-4">
         {/* Description */}
@@ -38,6 +38,6 @@ export default function Page() {
         <p>{/* adds spacing */}</p>
         <TabsPage />
       </main>
-    </div>
+    </Suspense>
   );
 }
