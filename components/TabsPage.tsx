@@ -16,6 +16,7 @@ import ItemCardForm from "./ui/itemCardForm";
 import EditableCard from "./ItemCard";
 import CategoryTab from "./category-tab";
 import { produce } from "immer";
+import TabField from "./tab-field";
 
 const PRIORITY_ITEMS = "PRIORITY_ITEMS";
 
@@ -53,33 +54,7 @@ export default function TabsPage() {
             />
           ))}
           {edit &&
-            (addingCategory ? (
-              <div className="flex gap-4 items-center bg-background rounded-sm">
-                <input
-                  autoFocus
-                  className="p-2 rounded-sm"
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") {
-                      setAddingCategory(false);
-                    }
-                    if (e.key === "Enter") {
-                      const newName = e.currentTarget.value;
-                      if (
-                        !newName.toLowerCase().includes("prior") &&
-                        newName.length > 0
-                      ) {
-                        addCategory(e.currentTarget.value);
-                        setInvalidateSignal(!invalidateSignal);
-                      }
-                      setAddingCategory(false);
-                    }
-                  }}
-                />
-                <button onClick={() => setAddingCategory(false)}>
-                  <X />
-                </button>
-              </div>
-            ) : (
+            (!addingCategory ? (
               <button
                 className="border-4 rounded-sm border-gray-400 bg-gray-400 py-1 px-2 text-white transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.05] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 onClick={() => setAddingCategory(true)}
@@ -87,6 +62,22 @@ export default function TabsPage() {
               >
                 Add New Category +
               </button>
+            ) : (
+              <TabField
+                defaultValue=""
+                onCancel={() => setAddingCategory(false)}
+                onSubmit={(e) => {
+                  const newName = e.currentTarget.value;
+                  if (
+                    !newName.toLowerCase().includes("prior") &&
+                    newName.length > 0
+                  ) {
+                    addCategory(e.currentTarget.value);
+                    setInvalidateSignal(!invalidateSignal);
+                  }
+                  setAddingCategory(false);
+                }}
+              />
             ))}
         </TabsList>
       </Tabs>
