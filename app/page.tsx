@@ -23,7 +23,7 @@ export default function Page() {
           <br />
           <p className="text-sm text-gray-600">
             <b>
-              Items can be brought to 1111 H Street (Paul's Place) between 8AM
+              Items can be brought to 1111 H Street (Paul&apos;s Place) between 8AM
               and 1:30PM Monday - Friday.
             </b>{" "}
             Volunteers are available to help unload your car. Please do not ship
