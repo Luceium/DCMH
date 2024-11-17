@@ -29,7 +29,7 @@ const CategoryTab = ({
       setHasChildren(children.length > 0);
     };
     fetchChildren();
-  }, []);
+  }, [category.id]);
 
   return (
     <div className="flex items-center bg-background rounded-sm">

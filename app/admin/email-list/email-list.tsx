@@ -6,7 +6,6 @@ import { getEmails } from '@/actions/getEmails'
 
 export default function EmailList() {
   const [emails, setEmails] = useState<string[]>([])
-  const [textToCopy, setTextToCopy] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 

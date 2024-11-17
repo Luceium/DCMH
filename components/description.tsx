@@ -16,7 +16,7 @@ export default function EditableDescription(): React.ReactNode {
     getDescription().then((description) => setDescription(description));
   }, []);
 
-  if (!description) return <p>"Loading..."</p>;
+  if (!description) return <p>Loading...</p>;
 
   if (!edit) {
     return <div dangerouslySetInnerHTML={{ __html: description.text }} />;

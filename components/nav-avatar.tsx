@@ -13,7 +13,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
@@ -55,10 +54,11 @@ export default function NavAvatar() {
             <DropdownMenuItem asChild>
               <Link href="/admin/manage-users">Manage Users</Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link href="/admin/email-list">Email List</Link>
             </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
           </>
         )}
         <DropdownMenuItem className="cursor-pointer" onClick={() => logout()}>
