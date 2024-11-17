@@ -11,7 +11,7 @@ const TabField = ({
   onSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <div className="flex gap-4 items-center bg-background rounded-sm">
+    <div className="flex items-center bg-background rounded-sm">
       <input
         defaultValue={defaultValue}
         autoFocus
@@ -25,7 +25,7 @@ const TabField = ({
           }
         }}
       />
-      <button onClick={onCancel}>
+      <button className="p-2" onClick={onCancel}>
         <X />
       </button>
     </div>

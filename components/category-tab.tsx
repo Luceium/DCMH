@@ -32,7 +32,7 @@ const CategoryTab = ({
   }, []);
 
   return (
-    <div className="flex gap-4 items-center bg-background rounded-sm">
+    <div className="flex items-center bg-background rounded-sm">
       {tabEditMode ? (
         <TabField
           defaultValue={category.name}
@@ -68,6 +68,8 @@ const CategoryTab = ({
       )}
       {edit && !tabEditMode && (
         <button
+          className="p-2"
+          aria-label="Delete Category"
           onClick={() => {
             if (tabEditMode) {
               setTabEditMode(false);
