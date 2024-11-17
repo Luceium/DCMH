@@ -1,13 +1,15 @@
+import { lazy, Suspense } from "react";
+import Description from "@/components/description";
 import TabsPage from "@/components/TabsPage";
+import EditableDescription from "@/components/description";
 
 export default function Page() {
-
   return (
     <div>
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto p-4">
         {/* Description */}
-        <div className="mb-8 max-w-4xl">
+        {/* <div className="mb-8 max-w-4xl">
           <p className="text-gray-700 leading-relaxed">
             <b>
               Help us provide basic necessities to the unhoused members of our
@@ -31,8 +33,9 @@ export default function Page() {
             unlikely to get to us. We are happy to give you a donation receipt.
             Questions? Call 530-756-4008
           </p>
-        </div>
-
+        </div> */}
+        <EditableDescription />
+        <p>{/* adds spacing */}</p>
         <TabsPage />
       </main>
     </div>

@@ -6,6 +6,7 @@ import { deleteCategory, renameCategory } from "@/actions/categories";
 import { X } from "lucide-react";
 import { fetchItems } from "@/actions/fetchItems";
 import { useToast } from "./ui/use-toast";
+import TabField from "./tab-field";
 
 const CategoryTab = ({
   category,
@@ -31,28 +32,23 @@ const CategoryTab = ({
   }, []);
 
   return (
-    <div>
+    <div className="flex items-center bg-background rounded-sm">
       {tabEditMode ? (
-        <input
+        <TabField
           defaultValue={category.name}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setTabEditMode(false);
+          onCancel={() => setTabEditMode(false)}
+          onSubmit={(e) => {
+            const newName = e.currentTarget.value;
+            if (newName == "") {
+              deleteCategory(category.id);
             }
-
-            if (e.key === "Enter") {
-              const newName = e.currentTarget.value;
-              if (newName == "") {
-                deleteCategory(category.id);
-              }
-              if (
-                !newName.toLowerCase().includes("prior") &&
-                newName.length > 0
-              ) {
-                renameCategory(category.id, e.currentTarget.value);
-                setTabEditMode(false);
-                setInvalidateSignal(!invalidateSignal);
-              }
+            if (
+              !newName.toLowerCase().includes("prior") &&
+              newName.length > 0
+            ) {
+              renameCategory(category.id, e.currentTarget.value);
+              setTabEditMode(false);
+              setInvalidateSignal(!invalidateSignal);
             }
           }}
         />
@@ -70,8 +66,10 @@ const CategoryTab = ({
           {category.name}
         </TabsTrigger>
       )}
-      {edit && (
+      {edit && !tabEditMode && (
         <button
+          className="p-2"
+          aria-label="Delete Category"
           onClick={() => {
             if (tabEditMode) {
               setTabEditMode(false);

@@ -12,8 +12,8 @@ const ItemCard = ({ item, children }: { item: Item; children: ReactNode }) => {
           src={item.imageURL}
           alt={item.name}
           className="object-cover w-full h-full"
-          width={400}
-          height={400}
+          width={500}
+          height={500}
         />
         {children}
       </div>

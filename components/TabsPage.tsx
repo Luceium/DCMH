@@ -16,6 +16,7 @@ import ItemCardForm from "./ui/itemCardForm";
 import EditableCard from "./ItemCard";
 import CategoryTab from "./category-tab";
 import { produce } from "immer";
+import TabField from "./tab-field";
 
 const PRIORITY_ITEMS = "PRIORITY_ITEMS";
 
@@ -38,7 +39,10 @@ export default function TabsPage() {
         onValueChange={setActiveCategory}
       >
         <TabsList className="w-full h-auto flex-wrap justify-start overflow-x-auto gap-2">
-          <TabsTrigger value={PRIORITY_ITEMS} className="px-4 py-2 text-sm border border-gray-400">
+          <TabsTrigger
+            value={PRIORITY_ITEMS}
+            className="px-4 py-2 text-sm border border-gray-400"
+          >
             Priority Items
           </TabsTrigger>
           {categories.map((category: Category) => (
@@ -50,33 +54,7 @@ export default function TabsPage() {
             />
           ))}
           {edit &&
-            (addingCategory ? (
-              <div className="flex gap-4 items-center bg-background rounded-sm">
-                <input
-                  autoFocus
-                  className="p-2 rounded-sm"
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") {
-                      setAddingCategory(false);
-                    }
-                    if (e.key === "Enter") {
-                      const newName = e.currentTarget.value;
-                      if (
-                        !newName.toLowerCase().includes("prior") &&
-                        newName.length > 0
-                      ) {
-                        addCategory(e.currentTarget.value);
-                        setInvalidateSignal(!invalidateSignal);
-                      }
-                      setAddingCategory(false);
-                    }
-                  }}
-                />
-                <button onClick={() => setAddingCategory(false)}>
-                  <X />
-                </button>
-              </div>
-            ) : (
+            (!addingCategory ? (
               <button
                 className="border-4 rounded-sm border-gray-400 bg-gray-400 py-1 px-2 text-white transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.05] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 onClick={() => setAddingCategory(true)}
@@ -84,6 +62,22 @@ export default function TabsPage() {
               >
                 Add New Category +
               </button>
+            ) : (
+              <TabField
+                defaultValue=""
+                onCancel={() => setAddingCategory(false)}
+                onSubmit={(e) => {
+                  const newName = e.currentTarget.value;
+                  if (
+                    !newName.toLowerCase().includes("prior") &&
+                    newName.length > 0
+                  ) {
+                    addCategory(e.currentTarget.value);
+                    setInvalidateSignal(!invalidateSignal);
+                  }
+                  setAddingCategory(false);
+                }}
+              />
             ))}
         </TabsList>
       </Tabs>
@@ -121,7 +115,7 @@ export const TabsPageContent = ({
   }, [activeCategory, invalidateSignal]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
       {inventoryItems.length == 0 && <h1>No Items</h1>}
       {inventoryItems.map((item: Item) => (
         <EditableCard
@@ -142,7 +136,7 @@ export const TabsPageContent = ({
       ))}
       {activeCategory !== PRIORITY_ITEMS && edit && (
         <ItemCardForm
-          partialItem={{categoryId: activeCategory}}
+          partialItem={{ categoryId: activeCategory }}
           addItem={(newItem) =>
             addItem(
               newItem,
