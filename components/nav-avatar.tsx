@@ -13,11 +13,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Skeleton } from "./ui/skeleton";
@@ -54,34 +50,6 @@ export default function NavAvatar() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href={getAccountPageUrl()}>My Account</Link>
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem
-                  disabled={theme === "light"}
-                  onSelect={() => setTheme("light")}
-                >
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  disabled={theme === "dark"}
-                  onSelect={() => setTheme("dark")}
-                >
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  disabled={theme === "system"}
-                  onSelect={() => setTheme("system")}
-                >
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         {isAdmin && (
