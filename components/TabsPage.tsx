@@ -92,6 +92,7 @@ export default function TabsPage() {
         activeCategory={activeCategory}
         categories={categories}
         setActiveCategory={setActiveCategory}
+        invalidateSignal={invalidateSignal}
       />
     </>
   );
@@ -101,13 +102,15 @@ export const TabsPageContent = ({
   activeCategory,
   categories,
   setActiveCategory,
+  invalidateSignal,
 }: {
   activeCategory: string;
   categories: Category[];
   setActiveCategory: React.Dispatch<React.SetStateAction<string>>;
+  invalidateSignal: boolean;
 }) => {
   const { edit } = useContext(EditContext);
-  const [invalidateSignal, setInvalidateSignal] = useState(false);
+
   const [inventoryItems, setInventoryItems] = useState<Item[]>([]);
   useEffect(() => {
     if (activeCategory == PRIORITY_ITEMS) {
@@ -138,7 +141,7 @@ export const TabsPageContent = ({
       ))}
       {activeCategory !== PRIORITY_ITEMS && edit && (
         <ItemCardForm
-          partialItem={{}}
+          partialItem={{categoryId: activeCategory}}
           addItem={(newItem) =>
             addItem(
               newItem,
@@ -148,6 +151,7 @@ export const TabsPageContent = ({
               setActiveCategory
             )
           }
+          invalidateSignal={invalidateSignal}
         />
       )}
     </div>
