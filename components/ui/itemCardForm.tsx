@@ -16,12 +16,12 @@ import { Input } from "./input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
-import { Category, Item } from "@prisma/client";
+import { Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
 import { isImgUrl } from "@/lib/utils";
 import { watch } from "fs";
 import Image from "next/image";
-import { getCategory } from "@/actions/categories";
+import { getCategories } from "@/actions/categories";
 
 export const formSchema = z.object({
   imageURL: z
@@ -48,6 +48,7 @@ type ItemCardFormProps = {
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
   addItem?: (item: Item) => void;
   updateItem?: (item: Item) => void;
+  invalidateSignal: boolean;
 };
 
 const ItemCardForm: React.FC<ItemCardFormProps> = ({
@@ -55,17 +56,18 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
   setEditCardMode,
   addItem,
   updateItem,
+  invalidateSignal,
 }) => {
   const { edit } = useContext(EditContext);
 
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState<{ name: string; id: string }[]>([]);
+
   useEffect(() => {
-    if (partialItem.categoryId) {
-      getCategory(partialItem.categoryId).then((cat) => {
-        if (cat) setCategory(cat.name);
-      });
-    }
-  }, []);
+    getCategories()
+      .then((fetchedCategories) => {
+        setCategories(fetchedCategories);
+      })
+  }, [invalidateSignal]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
@@ -73,7 +75,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
     defaultValues: {
       imageURL: partialItem.imageURL ?? "",
       name: partialItem.name ?? "",
-      category: category,
+      category: partialItem.categoryId,
       description: partialItem.description ?? "",
       quantity: partialItem.quantity ?? 50,
       targetQuantity: partialItem.targetQuantity ?? 100,
@@ -155,8 +157,24 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    {/* TODO: DO_NOT_SUBMIT Use a combo box or input with autocomplete */}
-                    <Input {...field} />
+                    <select
+                      {...field}
+                      value={partialItem.categoryId || ""}
+                      className="border rounded-md w-full p-2 dark:bg-gray-700 dark:text-white"
+                      onChange={(e) => {
+                        const selectedCategory = e.target.value;
+                        field.onChange(selectedCategory);
+                      }}
+                    >
+                      <option value="" disabled>
+                        Select a category
+                      </option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

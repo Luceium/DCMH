@@ -9,10 +9,12 @@ const EditableCard = ({
   item,
   updateItem,
   deleteItem: deleteItemFromUI,
+  invalidateSignal,
 }: {
   item: Item;
   updateItem: (item: Item) => void;
   deleteItem: (item: Item) => void;
+  invalidateSignal: boolean;
 }) => {
   const [editCardMode, setEditCardMode] = React.useState(false);
   const { edit } = useContext(EditContext);
@@ -25,6 +27,7 @@ const EditableCard = ({
       partialItem={item}
       updateItem={updateItem}
       setEditCardMode={setEditCardMode}
+      invalidateSignal={invalidateSignal}
     />
   ) : (
     <ItemCard item={item}>

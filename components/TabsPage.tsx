@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { act, useContext, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditContext } from "@/lib/context";
 import { X } from "lucide-react";
@@ -92,6 +92,7 @@ export default function TabsPage() {
         activeCategory={activeCategory}
         categories={categories}
         setActiveCategory={setActiveCategory}
+        invalidateSignal={invalidateSignal}
       />
     </>
   );
@@ -101,16 +102,17 @@ export const TabsPageContent = ({
   activeCategory,
   categories,
   setActiveCategory,
+  invalidateSignal,
 }: {
   activeCategory: string;
   categories: Category[];
   setActiveCategory: React.Dispatch<React.SetStateAction<string>>;
+  invalidateSignal: boolean;
 }) => {
   const { edit } = useContext(EditContext);
-  const [invalidateSignal, setInvalidateSignal] = useState(false);
+
   const [inventoryItems, setInventoryItems] = useState<Item[]>([]);
   useEffect(() => {
-    console.log(activeCategory);
     if (activeCategory == PRIORITY_ITEMS) {
       fetchPriorityItems().then((items) => setInventoryItems(items));
     } else {
@@ -135,11 +137,12 @@ export const TabsPageContent = ({
           }
           deleteItem={() => deleteItem(item, inventoryItems, setInventoryItems)}
           item={item}
+          invalidateSignal={invalidateSignal}
         />
       ))}
       {activeCategory !== PRIORITY_ITEMS && edit && (
         <ItemCardForm
-          partialItem={{}}
+          partialItem={{categoryId: activeCategory}}
           addItem={(newItem) =>
             addItem(
               newItem,
@@ -149,6 +152,7 @@ export const TabsPageContent = ({
               setActiveCategory
             )
           }
+          invalidateSignal={invalidateSignal}
         />
       )}
     </div>
