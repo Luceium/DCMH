@@ -137,6 +137,7 @@ export const TabsPageContent = ({
           }
           deleteItem={() => deleteItem(item, inventoryItems, setInventoryItems)}
           item={item}
+          invalidateSignal={invalidateSignal}
         />
       ))}
       {activeCategory !== PRIORITY_ITEMS && edit && (
