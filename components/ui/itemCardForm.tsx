@@ -21,7 +21,7 @@ import { EditContext } from "@/lib/context";
 import { isImgUrl } from "@/lib/utils";
 import { watch } from "fs";
 import Image from "next/image";
-import { getCategory } from "@/actions/categories";
+import { getCategoryName, getCategories } from "@/actions/categories";
 
 export const formSchema = z.object({
   imageURL: z
@@ -59,12 +59,19 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
   const { edit } = useContext(EditContext);
 
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState<{ name: string; id: string }[]>([]);
+
   useEffect(() => {
     if (partialItem.categoryId) {
-      getCategory(partialItem.categoryId).then((cat) => {
+      getCategoryName(partialItem.categoryId).then((cat) => {
         if (cat) setCategory(cat.name);
       });
     }
+
+    getCategories()
+      .then((fetchedCategories) => {
+        setCategories(fetchedCategories);
+      })
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -155,8 +162,25 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    {/* TODO: DO_NOT_SUBMIT Use a combo box or input with autocomplete */}
-                    <Input {...field} />
+                    <select
+                      {...field}
+                      value={category || field.value || ""}
+                      className="border rounded-md w-full p-2 dark:bg-gray-700 dark:text-white"
+                      onChange={(e) => {
+                        const selectedCategory = e.target.value;
+                        field.onChange(selectedCategory);
+                        setCategory(selectedCategory);
+                      }}
+                    >
+                      <option value="" disabled>
+                        Select a category
+                      </option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.name}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
