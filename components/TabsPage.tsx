@@ -37,8 +37,8 @@ export default function TabsPage() {
         className="mb-8"
         onValueChange={setActiveCategory}
       >
-        <TabsList className="w-full h-12 justify-start overflow-x-auto px-2">
-          <TabsTrigger value={PRIORITY_ITEMS} className="px-4 py-2 text-sm">
+        <TabsList className="w-full h-auto flex-wrap justify-start overflow-x-auto gap-2">
+          <TabsTrigger value={PRIORITY_ITEMS} className="px-4 py-2 text-sm border border-gray-400">
             Priority Items
           </TabsTrigger>
           {categories.map((category: Category) => (
@@ -51,9 +51,10 @@ export default function TabsPage() {
           ))}
           {edit &&
             (addingCategory ? (
-              <div className="flex gap-4 items-center bg-background">
+              <div className="flex gap-4 items-center bg-background rounded-sm">
                 <input
                   autoFocus
+                  className="p-2 rounded-sm"
                   onKeyDown={(e) => {
                     if (e.key === "Escape") {
                       setAddingCategory(false);
@@ -76,8 +77,12 @@ export default function TabsPage() {
                 </button>
               </div>
             ) : (
-              <button onClick={() => setAddingCategory(true)}>
-                Add Category
+              <button
+                className="border-4 rounded-sm border-gray-400 bg-gray-400 py-1 px-2 text-white transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.05] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                onClick={() => setAddingCategory(true)}
+                aria-label="Add New Category"
+              >
+                Add New Category +
               </button>
             ))}
         </TabsList>
