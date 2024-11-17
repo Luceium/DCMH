@@ -38,7 +38,10 @@ export default function TabsPage() {
         onValueChange={setActiveCategory}
       >
         <TabsList className="w-full h-auto flex-wrap justify-start overflow-x-auto gap-2">
-          <TabsTrigger value={PRIORITY_ITEMS} className="px-4 py-2 text-sm border border-gray-400">
+          <TabsTrigger
+            value={PRIORITY_ITEMS}
+            className="px-4 py-2 text-sm border border-gray-400"
+          >
             Priority Items
           </TabsTrigger>
           {categories.map((category: Category) => (
@@ -121,7 +124,7 @@ export const TabsPageContent = ({
   }, [activeCategory, invalidateSignal]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
       {inventoryItems.length == 0 && <h1>No Items</h1>}
       {inventoryItems.map((item: Item) => (
         <EditableCard
@@ -142,7 +145,7 @@ export const TabsPageContent = ({
       ))}
       {activeCategory !== PRIORITY_ITEMS && edit && (
         <ItemCardForm
-          partialItem={{categoryId: activeCategory}}
+          partialItem={{ categoryId: activeCategory }}
           addItem={(newItem) =>
             addItem(
               newItem,
