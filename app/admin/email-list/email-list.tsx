@@ -1,41 +1,42 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { getEmails } from '@/actions/getEmails'
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { getEmails } from "@/actions/getEmails";
+import { toast } from "@/components/ui/use-toast";
 
 export default function EmailList() {
-  const [emails, setEmails] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [emails, setEmails] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchEmails() {
       try {
-        const fetchedEmails = await getEmails()
-        setEmails(fetchedEmails)
+        const fetchedEmails = await getEmails();
+        setEmails(fetchedEmails);
       } catch (err) {
-        setError('Failed to load emails. Please try again later.')
+        setError("Failed to load emails. Please try again later.");
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    fetchEmails()
-  }, [])
+    fetchEmails();
+  }, []);
 
   const handleCopyEmails = async () => {
-    const textToCopy = emails.join(',');
+    const textToCopy = emails.join(",");
     navigator.clipboard.writeText(textToCopy);
-
-  }
+    toast({ title: "Emails copied to clipboard" });
+  };
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>
+    return <div className="text-red-500">{error}</div>;
   }
 
   return (
@@ -43,12 +44,12 @@ export default function EmailList() {
       <h1 className="text-2xl font-bold mb-4">Email List</h1>
       <ul className="mb-4 list-disc pl-5">
         {emails.map((email, index) => (
-          <p key={index} className="mb-1">{email}</p>
+          <p key={index} className="mb-1">
+            {email}
+          </p>
         ))}
       </ul>
-      <Button onClick={handleCopyEmails}>
-        Copy
-      </Button>
+      <Button onClick={handleCopyEmails}>Copy</Button>
     </div>
-  )
+  );
 }
