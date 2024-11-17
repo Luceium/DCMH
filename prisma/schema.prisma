@@ -50,3 +50,8 @@ model Email {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   email String
 }
+
+model Description {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  text String
+}

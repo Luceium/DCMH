@@ -34,7 +34,7 @@ export default function RootLayout({
             <EditContextProvider>
               <div className="min-h-screen flex flex-col">
                 <Nav />
-                <div className="flex-1 pt-4">{children}</div>
+                <div className="flex-1">{children}</div>
                 <Footer />
               </div>
             </EditContextProvider>
