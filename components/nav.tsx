@@ -25,9 +25,9 @@ const Nav = () => {
               height={100}
             />
           </Link>
-          <h1 className="text-2xl font-bold text-secondary dark:text-blue-300">
+          <Link className="text-2xl font-bold text-secondary dark:text-blue-300" href="/">
             Pantry
-          </h1>
+          </Link>
           <div className="flex gap-4">
             {isAdmin && (
               <Toggle pressed={edit} onPressedChange={() => setEdit(!edit)}>
