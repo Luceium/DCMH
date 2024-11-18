@@ -16,14 +16,14 @@ export async function deleteItem(itemId: string) {
 }
 
 export async function addItem(
-  item: Omit<Item, "priority" | "categoryId" | "id"> & { category: string }
+  item: Omit<Item, "priority" | "id">
 ): Promise<Item> {
   const newItem = await prisma.item.create({
     data: {
-      ...item,
+      ...cleanItem(item),
       category: {
         connect: {
-          name: item.category,
+          name: item.categoryId,
         },
       },
     },
@@ -32,21 +32,14 @@ export async function addItem(
   return newItem;
 }
 
-export async function updateItem(
-  item: Omit<Item, "priority" | "categoryId"> & { category: string }
-): Promise<Item> {
+export async function updateItem(item: Omit<Item, "priority">): Promise<Item> {
   const updatedItem = await prisma.item.update({
     where: { id: item.id },
     data: {
-      ...produce(
-        item,
-        (item: Omit<Item, "priority" | "id"> & { id?: string }) => {
-          delete item.id;
-        }
-      ),
+      ...cleanItem(item),
       category: {
         connect: {
-          name: item.category,
+          id: item.categoryId,
         },
       },
     },
@@ -54,6 +47,18 @@ export async function updateItem(
   revalidatePath("/");
   return updatedItem;
 }
+
+const cleanItem = (
+  item: Omit<Item, "priority" | "id" | "categoryId"> & {
+    priority?: boolean;
+    id?: string;
+    categoryId?: string;
+  }
+): Omit<Item, "id" | "categoryId"> & { priority?: boolean } =>
+  produce(item, (draft) => {
+    delete draft.id;
+    delete draft.categoryId;
+  }) as Omit<Item, "id" | "categoryId"> & { priority?: boolean };
 
 export async function star(id: string, priority: boolean): Promise<Item> {
   const item = await prisma.item.update({

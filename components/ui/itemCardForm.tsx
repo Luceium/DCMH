@@ -2,7 +2,6 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Progress } from "./progress";
-import { submitItemFromForm } from "@/actions/editItems";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -127,7 +126,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="category"
+              name="categoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>

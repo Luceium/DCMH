@@ -82,8 +82,7 @@ async function starItem(
 }
 
 async function updateItemFromFrom(
-  item: Omit<Item, "id" | "categoryId" | "priority"> & {
-    category: string;
+  item: Omit<Item, "id" | "priority"> & {
     id?: string;
   },
   setItems: React.Dispatch<React.SetStateAction<Item[]>>,
@@ -95,7 +94,7 @@ async function updateItemFromFrom(
   if (!updatedItem) return;
 
   // updates local ui state
-  if (item.category === activeCategory) {
+  if (item.categoryId === activeCategory) {
     setItems((items) =>
       items.map((i) => (i.id === updatedItem.id ? updatedItem : i))
     );
@@ -105,8 +104,7 @@ async function updateItemFromFrom(
 }
 
 async function addItemFromForm(
-  item: Omit<Item, "id" | "categoryId" | "priority"> & {
-    category: string;
+  item: Omit<Item, "id" | "priority"> & {
     id?: string;
   },
   setItems: React.Dispatch<React.SetStateAction<Item[]>>
