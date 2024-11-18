@@ -72,7 +72,7 @@ const MessageForm = ({ defaultMessage }: { defaultMessage: string }) => {
       <p className="p-1">
         Edit your description:
         <br />
-        Use ctrl+b to bold text, ctrl+i to italicize, and ctrl+u to underline.
+        Use ctrl+b to <b>bold</b> text and ctrl+i to <i>italicize</i>.
       </p>
       <div className="outline outline-2 outline-sky-200 rounded-lg p-1 m-2">
         <RichTextEditor content={message} onChange={setMessage} />
