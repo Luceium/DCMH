@@ -9,21 +9,21 @@ export async function getDescription(): Promise<Description> {
 }
 
 export async function updateDescription(text: string) {
-    const existingDescription = await prisma.description.findFirst();
-    if (existingDescription) {
-        await prisma.description.update({
-            where: {
-                id: existingDescription.id,
-            },
-            data: {
-                text,
-            },
-        });
-    } else {
-        await prisma.description.create({
-            data: {
-                text,
-            },
-        });
-    }
+  const existingDescription = await prisma.description.findFirst();
+  if (existingDescription) {
+    await prisma.description.update({
+      where: {
+        id: existingDescription.id,
+      },
+      data: {
+        text,
+      },
+    });
+  } else {
+    await prisma.description.create({
+      data: {
+        text,
+      },
+    });
+  }
 }

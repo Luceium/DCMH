@@ -9,14 +9,12 @@ import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { Description } from "@prisma/client";
 
-export default function EditableDescription(): React.ReactNode {
+export default function EditableDescription({
+  description,
+}: {
+  description: Description;
+}): React.ReactNode {
   const { edit } = useContext(EditContext);
-  const [description, setDescription] = useState<Description>();
-  useEffect(() => {
-    getDescription().then((description) => setDescription(description));
-  }, []);
-
-  if (!description) return <p>Loading...</p>;
 
   if (!edit) {
     return <div dangerouslySetInnerHTML={{ __html: description.text }} />;

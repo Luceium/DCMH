@@ -15,23 +15,9 @@ export async function deleteItem(itemId: string) {
   return deleteItem;
 }
 
-export async function toggleItemPriority(itemId: string) {
-  const item = await prisma.item.findUnique({
-    where: { id: itemId },
-  });
-  if (!item) throw new Error(`Item with ID ${itemId} not found`);
-  const currentPriority = item.priority;
-  const prioritizedItem = await prisma.item.update({
-    where: { id: itemId },
-    data: { priority: !currentPriority },
-  });
-  revalidatePath("/");
-  return prioritizedItem;
-}
-
 export async function addItem(
   item: Omit<Item, "priority" | "categoryId" | "id"> & { category: string }
-) {
+): Promise<Item> {
   const newItem = await prisma.item.create({
     data: {
       ...item,
@@ -48,7 +34,7 @@ export async function addItem(
 
 export async function updateItem(
   item: Omit<Item, "priority" | "categoryId"> & { category: string }
-) {
+): Promise<Item> {
   const updatedItem = await prisma.item.update({
     where: { id: item.id },
     data: {
@@ -67,6 +53,15 @@ export async function updateItem(
   });
   revalidatePath("/");
   return updatedItem;
+}
+
+export async function star(id: string, priority: boolean): Promise<Item> {
+  const item = await prisma.item.update({
+    where: { id },
+    data: { priority },
+  });
+  revalidatePath("/");
+  return item;
 }
 
 /**

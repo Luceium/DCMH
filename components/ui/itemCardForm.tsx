@@ -1,9 +1,9 @@
 "use client";
 
-import React, { use, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Progress } from "./progress";
 import { submitItemFromForm } from "@/actions/editItems";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -16,12 +16,10 @@ import { Input } from "./input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
-import { Item } from "@prisma/client";
+import { Category, Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
 import { isImgUrl } from "@/lib/utils";
-import { watch } from "fs";
 import Image from "next/image";
-import { getCategories } from "@/actions/categories";
 
 export const formSchema = z.object({
   imageURL: z
@@ -46,28 +44,17 @@ export type FormSchema = z.infer<typeof formSchema>;
 type ItemCardFormProps = {
   partialItem: Partial<Item>;
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  addItem?: (item: Item) => void;
-  updateItem?: (item: Item) => void;
-  invalidateSignal: boolean;
+  onSubmit: (formData: FormSchema & {id?: string}) => void;
+  categories: Category[];
 };
 
 const ItemCardForm: React.FC<ItemCardFormProps> = ({
   partialItem,
   setEditCardMode,
-  addItem,
-  updateItem,
-  invalidateSignal,
+  onSubmit,
+  categories,
 }) => {
   const { edit } = useContext(EditContext);
-
-  const [categories, setCategories] = useState<{ name: string; id: string }[]>([]);
-
-  useEffect(() => {
-    getCategories()
-      .then((fetchedCategories) => {
-        setCategories(fetchedCategories);
-      })
-  }, [invalidateSignal]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
@@ -105,14 +92,8 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(async (values: FormSchema) => {
-              const item = await submitItemFromForm(values, partialItem?.id);
-
-              if (isUpdate) {
-                updateItem?.(item);
-                setEditCardMode?.(false);
-              } else {
-                addItem?.(item);
-              }
+              onSubmit({ ...values, id: partialItem.id });
+              setEditCardMode?.(false);
             })}
           >
             {validImageURL && (

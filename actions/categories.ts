@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
+import { error } from "console";
 
 export async function getCategories() {
   return await prisma.category.findMany();
@@ -30,6 +31,16 @@ export async function addCategory(name: string) {
 }
 
 export async function deleteCategory(id: string) {
+  // check if the category is empty
+  const items = await prisma.item.findMany({
+    where: {
+      categoryId: id,
+    },
+  });
+  if (items.length > 0) {
+    return { error: "Category is not empty" };
+  }
+
   return await prisma.category.delete({
     where: {
       id,

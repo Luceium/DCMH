@@ -1,35 +1,22 @@
 import { EditContext } from "@/lib/context";
 import { Category } from "@prisma/client";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsTrigger } from "@/components/ui/tabs";
 import React, { useContext } from "react";
 import { deleteCategory, renameCategory } from "@/actions/categories";
-import { Trash, X } from "lucide-react";
-import { fetchItems } from "@/actions/fetchItems";
+import { Trash } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import TabField from "./tab-field";
 
 const CategoryTab = ({
   category,
-  invalidateSignal,
-  setInvalidateSignal,
+  setCategories,
 }: {
   category: Category;
-  invalidateSignal: boolean;
-  setInvalidateSignal: React.Dispatch<React.SetStateAction<boolean>>;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 }) => {
   const { edit } = useContext(EditContext);
   const [tabEditMode, setTabEditMode] = React.useState(false);
   const { toast } = useToast();
-
-  // true by default so we can't delete before checking
-  const [hasChildren, setHasChildren] = React.useState(true);
-  React.useEffect(() => {
-    const fetchChildren = async () => {
-      const children = await fetchItems(category.id);
-      setHasChildren(children.length > 0);
-    };
-    fetchChildren();
-  }, [category.id]);
 
   return (
     <div className="flex items-center rounded-sm">
@@ -37,7 +24,7 @@ const CategoryTab = ({
         <TabField
           defaultValue={category.name}
           onCancel={() => setTabEditMode(false)}
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             const newName = e.currentTarget.value;
             if (newName == "") {
               deleteCategory(category.id);
@@ -46,9 +33,15 @@ const CategoryTab = ({
               !newName.toLowerCase().includes("prior") &&
               newName.length > 0
             ) {
-              renameCategory(category.id, e.currentTarget.value);
+              const updatedCategory = await renameCategory(
+                category.id,
+                e.currentTarget.value
+              );
+              if (updatedCategory)
+                setCategories((prev) =>
+                  prev.map((c) => (c.id === category.id ? updatedCategory : c))
+                );
               setTabEditMode(false);
-              setInvalidateSignal(!invalidateSignal);
             }
           }}
         />
@@ -70,20 +63,24 @@ const CategoryTab = ({
         <button
           className="p-2"
           aria-label="Delete Category"
-          onClick={() => {
+          onClick={async () => {
             if (tabEditMode) {
               setTabEditMode(false);
             } else {
-              if (hasChildren) {
+              const deletedCategory = await deleteCategory(category.id);
+              if (!deletedCategory || "error" in deletedCategory) {
                 toast({
                   title: "Can't delete category",
                   description:
-                    "To delete a category, all of it's items must be deleted first or reassigned to other categories. If this is wrong, please try again in a few seconds.",
+                    "error" in deletedCategory
+                      ? deletedCategory.error
+                      : "An unknown error occurred.",
                   variant: "destructive",
                 });
               } else {
-                deleteCategory(category.id);
-                setInvalidateSignal(!invalidateSignal);
+                setCategories((prev) =>
+                  prev.filter((c) => c.id !== deletedCategory.id)
+                );
               }
             }
           }}

@@ -1,20 +1,22 @@
 import React, { useContext, useEffect } from "react";
 import ItemCard from "./card";
-import { Item } from "@prisma/client";
+import { Category, Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
-import ItemCardForm from "./ui/itemCardForm";
+import ItemCardForm, { FormSchema } from "./ui/itemCardForm";
 import CardEditBar from "./CardEditBar";
 
 const EditableCard = ({
   item,
-  updateItem,
-  deleteItem: deleteItemFromUI,
-  invalidateSignal,
+  onSubmit,
+  deleteItem,
+  categories,
+  starItem,
 }: {
   item: Item;
-  updateItem: (item: Item) => void;
+  onSubmit: (formData: FormSchema & { id?: string }) => void;
   deleteItem: (item: Item) => void;
-  invalidateSignal: boolean;
+  categories: Category[];
+  starItem: () => void;
 }) => {
   const [editCardMode, setEditCardMode] = React.useState(false);
   const { edit } = useContext(EditContext);
@@ -25,18 +27,18 @@ const EditableCard = ({
   return edit && editCardMode ? (
     <ItemCardForm
       partialItem={item}
-      updateItem={updateItem}
+      onSubmit={onSubmit}
       setEditCardMode={setEditCardMode}
-      invalidateSignal={invalidateSignal}
+      categories={categories}
     />
   ) : (
     <ItemCard item={item}>
       {edit && (
         <CardEditBar
-          item={item}
           setEditCardMode={setEditCardMode}
-          deleteItemFromUI={deleteItemFromUI}
-          updateItemFromUI={updateItem}
+          deleteItem={() => deleteItem(item)}
+          starItem={starItem}
+          prioritized={item.priority}
         />
       )}
     </ItemCard>
