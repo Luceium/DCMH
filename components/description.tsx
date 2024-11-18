@@ -1,25 +1,28 @@
 "use client";
 import { EditContext } from "@/lib/context";
-import React, { useContext, useEffect, useState } from "react";
+import React, { SetStateAction, use, useContext, useState } from "react";
 import { getDescription, updateDescription } from "@/actions/description";
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
+import { set } from "react-hook-form";
 import { Description } from "@prisma/client";
 
-export default function EditableDescription({
-  description,
-}: {
-  description: Description;
-}): React.ReactNode {
+export default function EditableDescription(): React.ReactNode {
   const { edit } = useContext(EditContext);
+  const [description, setDescription] = useState(use(getDescription()));
 
   if (!edit) {
     return <div dangerouslySetInnerHTML={{ __html: description.text }} />;
   } else {
-    return <MessageForm defaultMessage={description.text} />;
+    return (
+      <MessageForm
+        defaultMessage={description.text}
+        setDescription={setDescription}
+      />
+    );
   }
 }
 
@@ -49,12 +52,19 @@ const RichTextEditor = ({
   return <EditorContent editor={editor} />;
 };
 
-const MessageForm = ({ defaultMessage }: { defaultMessage: string }) => {
+const MessageForm = ({
+  defaultMessage,
+  setDescription,
+}: {
+  defaultMessage: string;
+  setDescription: React.Dispatch<SetStateAction<Description>>;
+}) => {
   const { toast } = useToast();
   const [message, setMessage] = useState(defaultMessage);
 
   const handleSubmit = async () => {
     await updateDescription(message);
+    setDescription({ text: message, id: "0" });
     toast({
       title: "Updated description",
       description: "Turn off edit mode to see changes.",

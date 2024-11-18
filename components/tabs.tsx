@@ -8,11 +8,9 @@ import { fetchItems } from "@/actions/fetchItems";
 const Tabs = ({
   activeCategory: _activeCategory,
   categories: _categories,
-  items: items,
 }: {
   activeCategory: string;
   categories: Category[];
-  items: Item[];
 }) => {
   const [activeCategory, setActiveCategory] = useState(_activeCategory);
   const [categories, setCategories] = useState(_categories);
@@ -31,7 +29,6 @@ const Tabs = ({
         <TabsContent
           activeCategory={activeCategory}
           categories={categories}
-          items={items}
         />
       </Suspense>
     </>

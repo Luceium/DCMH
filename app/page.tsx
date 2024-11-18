@@ -12,24 +12,18 @@ export default async function Page({
     tab?: string;
   };
 }) {
-  const description = await getDescription();
   const activeCategory = searchParams.tab || "PRIORITY_ITEMS";
-  const items =
-    activeCategory === "PRIORITY_ITEMS"
-      ? await fetchPriorityItems()
-      : await fetchItems(activeCategory);
   const categories = await getCategories();
 
   return (
     <main className="container mx-auto p-4">
       <Suspense fallback={<p>Loading description</p>}>
-        <EditableDescription description={description} />
+        <EditableDescription/>
       </Suspense>
       <br />
       <Suspense fallback={<p>Loading tabs</p>}>
         <Tabs
           activeCategory={activeCategory}
-          items={items}
           categories={categories}
         />
       </Suspense>

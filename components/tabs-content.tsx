@@ -1,6 +1,6 @@
 "use client";
 import { Category, Item } from "@prisma/client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import ItemCardForm from "./ui/itemCardForm";
 import EditableCard from "./ItemCard";
 import { EditContext } from "@/lib/context";
@@ -8,29 +8,23 @@ import * as db from "@/actions/editItems";
 import { fetchItems, fetchPriorityItems } from "@/actions/fetchItems";
 
 export const TabsContent = ({
-  items,
   categories,
   activeCategory,
 }: {
-  items: Item[];
   categories: Category[];
   activeCategory: string;
 }) => {
   const { edit } = useContext(EditContext);
-  const [inventoryItems, setInventoryItems] = useState<Item[]>(items);
+  const [inventoryItems, setInventoryItems] = useState<Item[]>([]);
 
   useEffect(() => {
     console.log("fetching items");
     if (activeCategory === "PRIORITY_ITEMS") {
       console.log("fetching priority items");
-      fetchPriorityItems().then((priorityItems) => {
-        setInventoryItems(priorityItems);
-      });
+      setInventoryItems(use(fetchPriorityItems()));
     } else {
       console.log("fetching category items");
-      fetchItems(activeCategory).then((categoryItems) => {
-        setInventoryItems(categoryItems);
-      });
+      setInventoryItems(use(fetchItems(activeCategory)));
     }
   }, [activeCategory]);
 
