@@ -3,7 +3,7 @@ import { Category } from "@prisma/client";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useContext } from "react";
 import { deleteCategory, renameCategory } from "@/actions/categories";
-import { X } from "lucide-react";
+import { Trash, X } from "lucide-react";
 import { fetchItems } from "@/actions/fetchItems";
 import { useToast } from "./ui/use-toast";
 import TabField from "./tab-field";
@@ -88,7 +88,7 @@ const CategoryTab = ({
             }
           }}
         >
-          <X />
+          <Trash />
         </button>
       )}
     </div>
