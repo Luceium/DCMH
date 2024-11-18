@@ -27,13 +27,7 @@ export const formSchema = z.object({
     .url()
     .refine(isImgUrl, { message: "Please enter a valid image URL." }),
   name: z.string().min(1),
-  category: z
-    .string()
-    .min(1)
-    .refine((category) => category != "Prioritized", {
-      message:
-        'Please use a more descriptive category and star the item after to add it to "Prioritized".',
-    }),
+  categoryId: z.string().min(1),
   description: z.string().min(1),
   quantity: z.number().nonnegative(),
   targetQuantity: z.number().positive(),
@@ -44,7 +38,7 @@ export type FormSchema = z.infer<typeof formSchema>;
 type ItemCardFormProps = {
   partialItem: Partial<Item>;
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: (formData: FormSchema & {id?: string}) => void;
+  onSubmit: (formData: FormSchema & { id?: string }) => void;
   categories: Category[];
 };
 
@@ -62,7 +56,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
     defaultValues: {
       imageURL: partialItem.imageURL ?? "",
       name: partialItem.name ?? "",
-      category: partialItem.categoryId,
+      categoryId: partialItem.categoryId,
       description: partialItem.description ?? "",
       quantity: partialItem.quantity ?? 50,
       targetQuantity: partialItem.targetQuantity ?? 100,
@@ -87,7 +81,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
 
   return (
     edit && (
-      <div className="card w-80 bg-[#e3e8fc] dark:bg-gray-500 mb-4 p-4">
+      <div className="card w-full bg-[#e3e8fc] dark:bg-gray-500 mb-4 p-4">
         {!isUpdate && <p className="text-center">Add New Item</p>}
         <Form {...form}>
           <form

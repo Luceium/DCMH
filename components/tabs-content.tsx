@@ -40,9 +40,11 @@ export const TabsContent = ({
       {inventoryItems.map((item: Item) => (
         <EditableCard
           key={item.id}
-          starItem={() => starItem(item.id, !item.priority, setInventoryItems)}
+          starItem={() =>
+            starItem(item.id, !item.priority, activeCategory, setInventoryItems)
+          }
           onSubmit={(formData) =>
-            updateItemFromFrom(formData, setInventoryItems)
+            updateItemFromFrom(formData, setInventoryItems, activeCategory)
           }
           deleteItem={() => deleteItem(item, setInventoryItems)}
           item={item}
@@ -63,15 +65,20 @@ export const TabsContent = ({
 async function starItem(
   id: string,
   priority: boolean,
+  activeCategory: string,
   setItems: React.Dispatch<React.SetStateAction<Item[]>>
 ) {
   // updates db
   const updatedItem = await db.star(id, priority);
   if (!updatedItem) return;
 
-  setItems((items) =>
-    items.map((i) => (i.id === updatedItem.id ? updatedItem : i))
-  );
+  if (!priority && activeCategory == "PRIORITY_ITEMS") {
+    setItems((items) => items.filter((i) => i.id !== updatedItem.id));
+  } else {
+    setItems((items) =>
+      items.map((i) => (i.id === updatedItem.id ? updatedItem : i))
+    );
+  }
 }
 
 async function updateItemFromFrom(
@@ -79,7 +86,8 @@ async function updateItemFromFrom(
     category: string;
     id?: string;
   },
-  setItems: React.Dispatch<React.SetStateAction<Item[]>>
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  activeCategory: string
 ) {
   if (!item.id) return;
   // updates db
@@ -87,9 +95,13 @@ async function updateItemFromFrom(
   if (!updatedItem) return;
 
   // updates local ui state
-  setItems((items) =>
-    items.map((i) => (i.id === updatedItem.id ? updatedItem : i))
-  );
+  if (item.category === activeCategory) {
+    setItems((items) =>
+      items.map((i) => (i.id === updatedItem.id ? updatedItem : i))
+    );
+  } else {
+    setItems((items) => items.filter((i) => i.id !== updatedItem.id));
+  }
 }
 
 async function addItemFromForm(
@@ -107,10 +119,11 @@ async function addItemFromForm(
   setItems((items) => [...items, newItem]);
 }
 
-function deleteItem(
+async function deleteItem(
   item: Item,
   setItems: React.Dispatch<React.SetStateAction<Item[]>>
 ) {
+  await db.deleteItem(item.id);
   setItems((items) => items.filter((i) => i.id !== item.id));
 }
 

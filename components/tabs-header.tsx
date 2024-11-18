@@ -6,7 +6,7 @@ import { addCategory } from "@/actions/categories";
 import { Category } from "@prisma/client";
 import CategoryTab from "./category-tab";
 import TabField from "./tab-field";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const PRIORITY_ITEMS = "PRIORITY_ITEMS";
 
