@@ -32,7 +32,7 @@ const CategoryTab = ({
   }, [category.id]);
 
   return (
-    <div className="flex items-center bg-background rounded-sm">
+    <div className="flex items-center rounded-sm">
       {tabEditMode ? (
         <TabField
           defaultValue={category.name}

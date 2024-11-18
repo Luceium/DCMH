@@ -1,5 +1,5 @@
 "use client";
-import { act, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditContext } from "@/lib/context";
 import { X } from "lucide-react";
@@ -17,15 +17,26 @@ import EditableCard from "./ItemCard";
 import CategoryTab from "./category-tab";
 import { produce } from "immer";
 import TabField from "./tab-field";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const PRIORITY_ITEMS = "PRIORITY_ITEMS";
 
 export default function TabsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [activeCategory, setActiveCategory] = useState(PRIORITY_ITEMS);
   const { edit } = useContext(EditContext);
   const [addingCategory, setAddingCategory] = useState(false);
   const [invalidateSignal, setInvalidateSignal] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') || PRIORITY_ITEMS;
+  const [activeCategory, setActiveCategory] = useState(initialTab);
+
+  useEffect(() => {
+    const currentTab = searchParams.get('tab');
+    if (activeCategory && activeCategory !== currentTab) {
+      router.push(`/?tab=${activeCategory}`, undefined);
+    }
+  }, [activeCategory, router, searchParams]);
 
   useEffect(() => {
     getCategories().then((categories) => setCategories(categories));
@@ -34,7 +45,7 @@ export default function TabsPage() {
   return (
     <>
       <Tabs
-        defaultValue={PRIORITY_ITEMS}
+        value={activeCategory}
         className="mb-8"
         onValueChange={setActiveCategory}
       >
