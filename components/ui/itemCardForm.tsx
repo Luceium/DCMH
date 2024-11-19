@@ -87,6 +87,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
             onSubmit={form.handleSubmit(async (values: FormSchema) => {
               onSubmit({ ...values, id: partialItem.id });
               setEditCardMode?.(false);
+              form.reset();
             })}
           >
             {validImageURL && (
