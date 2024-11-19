@@ -9,6 +9,24 @@ const config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  daisyui: {
+    themes: [
+      {
+        dcmh: {
+          primary: "#f8d55c",
+          secondary: "#2c5895",
+          secondaryDark: "#1a3a69",
+          accent: "#f36446",
+          neutral: "#ffffff",
+          "base-100": "#f6efda",
+          info: "#0082ce",
+          success: "#a5f3fc",
+          warning: "#fef08a",
+          error: "#ff6f75",
+        },
+      },
+    ],
+  },
   theme: {
     container: {
       center: true,
@@ -24,14 +42,6 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -39,10 +49,6 @@ const config = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

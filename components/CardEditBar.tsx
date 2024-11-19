@@ -1,28 +1,26 @@
 import React from "react";
 import { EditSVG, StarSVG, XSVG } from "./svg";
-import { Item } from "@prisma/client";
-import { deleteItem, toggleItemPriority } from "@/actions/editItems";
 
 const CardEditBar = ({
-  item,
   setEditCardMode,
-  deleteItemFromUI,
-  updateItemFromUI,
+  deleteItem,
+  starItem,
+  prioritized,
 }: {
-  item: Item;
   setEditCardMode: React.Dispatch<React.SetStateAction<boolean>>;
-  deleteItemFromUI: (item: Item) => void;
-  updateItemFromUI: (item: Item) => void;
+  deleteItem: () => void;
+  starItem: () => void;
+  prioritized: boolean;
 }) => {
   return (
     <div className="absolute top-0 right-0 p-2 text-black bg-opacity-35 bg-white rounded-2xl">
       <button
         onClick={async () => {
-          updateItemFromUI(await toggleItemPriority(item.id));
+          starItem();
         }}
         className="px-1"
       >
-        <StarSVG fill={item.priority} />
+        <StarSVG fill={prioritized} />
       </button>
       <button
         onClick={async () => {
@@ -32,13 +30,7 @@ const CardEditBar = ({
       >
         <EditSVG />
       </button>
-      <button
-        onClick={async () => {
-          await deleteItem(item.id);
-          deleteItemFromUI(item);
-        }}
-        className="px-1"
-      >
+      <button onClick={deleteItem} className="px-1">
         <XSVG />
       </button>
     </div>
