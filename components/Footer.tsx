@@ -31,7 +31,7 @@ const Footer = () => {
         </a>
       </nav>
       <nav>
-        <h6 className="footer-title">Made with love by:</h6>
+        <h6 className="footer-title">Made with &#128153; by:</h6>
         <a
           className="link link-hover"
           href="https://www.linkedin.com/in/luceium"
