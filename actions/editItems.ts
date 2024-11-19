@@ -23,7 +23,7 @@ export async function addItem(
       ...cleanItem(item),
       category: {
         connect: {
-          name: item.categoryId,
+          id: item.categoryId,
         },
       },
     },
@@ -54,7 +54,7 @@ const cleanItem = (
     id?: string;
     categoryId?: string;
   }
-): Omit<Item, "id" | "categoryId"> & { priority?: boolean } =>
+) =>
   produce(item, (draft) => {
     delete draft.id;
     delete draft.categoryId;

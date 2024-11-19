@@ -54,7 +54,9 @@ export const TabsContent = ({
       {activeCategory !== "PRIORITY_ITEMS" && edit && (
         <ItemCardForm
           partialItem={{ categoryId: activeCategory }}
-          onSubmit={(formData) => addItemFromForm(formData, setInventoryItems)}
+          onSubmit={(formData) =>
+            addItemFromForm(formData, setInventoryItems, activeCategory)
+          }
           categories={categories}
         />
       )}
@@ -107,14 +109,17 @@ async function addItemFromForm(
   item: Omit<Item, "id" | "priority"> & {
     id?: string;
   },
-  setItems: React.Dispatch<React.SetStateAction<Item[]>>
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  activeCategory: string
 ) {
   // adds item to db
   const newItem = await db.addItem(item);
   if (!newItem) return;
 
-  // adds item to local ui state
-  setItems((items) => [...items, newItem]);
+  // add item to local ui state
+  if (item.categoryId === activeCategory) {
+    setItems((items) => [...items, newItem]);
+  }
 }
 
 async function deleteItem(
