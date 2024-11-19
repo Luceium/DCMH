@@ -96,7 +96,10 @@ async function updateItemFromFrom(
   if (!updatedItem) return;
 
   // updates local ui state
-  if (item.categoryId === activeCategory) {
+  if (
+    activeCategory === "PRIORITY_ITEMS" ||
+    item.categoryId === activeCategory
+  ) {
     setItems((items) =>
       items.map((i) => (i.id === updatedItem.id ? updatedItem : i))
     );
