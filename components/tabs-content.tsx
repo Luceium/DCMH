@@ -20,14 +20,11 @@ export const TabsContent = ({
   const [inventoryItems, setInventoryItems] = useState<Item[]>(items);
 
   useEffect(() => {
-    console.log("fetching items");
     if (activeCategory === "PRIORITY_ITEMS") {
-      console.log("fetching priority items");
       fetchPriorityItems().then((priorityItems) => {
         setInventoryItems(priorityItems);
       });
     } else {
-      console.log("fetching category items");
       fetchItems(activeCategory).then((categoryItems) => {
         setInventoryItems(categoryItems);
       });

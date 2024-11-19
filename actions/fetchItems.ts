@@ -21,7 +21,6 @@ export async function fetchItems(categoryId: string): Promise<Item[]> {
 }
 
 export async function fetchPriorityItems(): Promise<Item[]> {
-  console.log("[SERVER LOG] fetching priority items");
   return await prisma.item.findMany({
     where: {
       priority: true,

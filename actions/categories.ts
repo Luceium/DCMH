@@ -1,6 +1,5 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { error } from "console";
 
 export async function getCategories() {
   return await prisma.category.findMany();
