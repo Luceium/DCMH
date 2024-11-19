@@ -39,13 +39,13 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <EditContextProvider>
-                <div className="min-h-[50vh]">
+                <PostHogPageView />
+                <div className="min-h-screen flex flex-col">
                   <Nav />
-                  <PostHogPageView />
-                  <div className="pt-4">{children}</div>
+                  <div className="flex-1">{children}</div>
+                  <Footer />
                 </div>
               </EditContextProvider>
-              <Footer />
               <Toaster />
             </ThemeProvider>
           </body>

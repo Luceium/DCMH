@@ -2,8 +2,7 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Progress } from "./progress";
-import { submitItemFromForm } from "@/actions/editItems";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -16,10 +15,9 @@ import { Input } from "./input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./button";
-import { Item } from "@prisma/client";
+import { Category, Item } from "@prisma/client";
 import { EditContext } from "@/lib/context";
 import { isImgUrl } from "@/lib/utils";
-import { watch } from "fs";
 import Image from "next/image";
 
 export const formSchema = z.object({
@@ -28,13 +26,7 @@ export const formSchema = z.object({
     .url()
     .refine(isImgUrl, { message: "Please enter a valid image URL." }),
   name: z.string().min(1),
-  category: z
-    .string()
-    .min(1)
-    .refine((category) => category != "Prioritized", {
-      message:
-        'Please use a more descriptive category and star the item after to add it to "Prioritized".',
-    }),
+  categoryId: z.string().min(1),
   description: z.string().min(1),
   quantity: z.number().nonnegative(),
   targetQuantity: z.number().positive(),
@@ -43,17 +35,17 @@ export const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 
 type ItemCardFormProps = {
-  partialItem: Partial<Item> & { category: string };
+  partialItem: Partial<Item>;
   setEditCardMode?: React.Dispatch<React.SetStateAction<boolean>>;
-  addItem?: (item: Item) => void;
-  updateItem?: (item: Item) => void;
+  onSubmit: (formData: FormSchema & { id?: string }) => void;
+  categories: Category[];
 };
 
 const ItemCardForm: React.FC<ItemCardFormProps> = ({
   partialItem,
   setEditCardMode,
-  addItem,
-  updateItem,
+  onSubmit,
+  categories,
 }) => {
   const { edit } = useContext(EditContext);
 
@@ -63,7 +55,7 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
     defaultValues: {
       imageURL: partialItem.imageURL ?? "",
       name: partialItem.name ?? "",
-      category: partialItem.category,
+      categoryId: partialItem.categoryId,
       description: partialItem.description ?? "",
       quantity: partialItem.quantity ?? 50,
       targetQuantity: partialItem.targetQuantity ?? 100,
@@ -88,19 +80,14 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
 
   return (
     edit && (
-      <div className="card w-80 bg-[#e3e8fc] dark:bg-gray-500 mb-4 p-4">
+      <div className="card w-full bg-[#e3e8fc] dark:bg-gray-500 mb-4 p-4">
         {!isUpdate && <p className="text-center">Add New Item</p>}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(async (values: FormSchema) => {
-              const item = await submitItemFromForm(values, partialItem?.id);
-
-              if (isUpdate) {
-                updateItem?.(item);
-                setEditCardMode?.(false);
-              } else {
-                addItem?.(item);
-              }
+              onSubmit({ ...values, id: partialItem.id });
+              setEditCardMode?.(false);
+              form.reset();
             })}
           >
             {validImageURL && (
@@ -140,13 +127,29 @@ const ItemCardForm: React.FC<ItemCardFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="category"
+              name="categoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    {/* TODO: DO_NOT_SUBMIT Use a combo box or input with autocomplete */}
-                    <Input {...field} />
+                    <select
+                      {...field}
+                      value={partialItem.categoryId || ""}
+                      className="border rounded-md w-full p-2 dark:bg-gray-700 dark:text-white"
+                      onChange={(e) => {
+                        const selectedCategory = e.target.value;
+                        field.onChange(selectedCategory);
+                      }}
+                    >
+                      <option value="" disabled>
+                        Select a category
+                      </option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
