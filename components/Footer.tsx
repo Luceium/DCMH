@@ -30,33 +30,6 @@ const Footer = () => {
           Volunteer
         </a>
       </nav>
-      <nav>
-        <h6 className="footer-title">Learn More</h6>
-        <a
-          className="link link-hover"
-          href="https://daviscommunitymeals.org/events/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Events
-        </a>
-        <a
-          className="link link-hover"
-          href="https://daviscommunitymeals.org/news/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          News
-        </a>
-        <a
-          className="link link-hover"
-          href="https://paulsplacedavis.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Paul&apos;s Place
-        </a>
-      </nav>
       <form
         action={async (formData: FormData) => {
           "use server";
