@@ -9,11 +9,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { EditContextProvider } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { PHProvider } from "@/lib/analytics";
-import dynamic from "next/dynamic";
-
-const PostHogPageView = dynamic(() => import("../lib/PostHogPageView"), {
-  ssr: false,
-});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,7 +34,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <EditContextProvider>
-                <PostHogPageView />
+                {/* <PostHogPageView /> */}
                 <div className="min-h-screen flex flex-col">
                   <Nav />
                   <div className="flex-1">{children}</div>

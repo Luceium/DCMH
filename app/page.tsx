@@ -5,13 +5,12 @@ import { getCategories, getCategoryName } from "@/actions/categories";
 import { getDescription } from "@/actions/description";
 import Tabs from "@/components/tabs";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: {
+export default async function Page(props: {
+  searchParams: Promise<{
     tab?: string;
-  };
+  }>;
 }) {
+  const searchParams = await props.searchParams;
   const description = await getDescription();
   const activeCategory = searchParams.tab || "PRIORITY_ITEMS";
   const items =
