@@ -1,8 +1,11 @@
-import { getRouteHandlers } from "@propelauth/nextjs/server/app-router";
+import { getRouteHandlers } from '@propelauth/nextjs/server/app-router'
+import { NextRequest } from 'next/server'
 
 const routeHandlers = getRouteHandlers({
-  postLoginRedirectPathFn: () => "/authenticated",
-});
+    postLoginRedirectPathFn: (req: NextRequest) => {
+        return '/'
+    },
+})
 
-export const GET = routeHandlers.getRouteHandler;
-export const POST = routeHandlers.postRouteHandler;
+export const GET = routeHandlers.getRouteHandlerAsync
+export const POST = routeHandlers.postRouteHandlerAsync
